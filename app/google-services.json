@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "264482427000",
+    "firebase_url": "https://capstone-project-20ec5.firebaseio.com",
+    "project_id": "capstone-project-20ec5",
+    "storage_bucket": "capstone-project-20ec5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264482427000:android:b047796ede991cbe",
+        "android_client_info": {
+          "package_name": "com.example.neha.appsdontlie_capstonestage2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264482427000-glr7oojtpng98d7di5sgtiip07jbgdt2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neha.appsdontlie_capstonestage2",
+            "certificate_hash": "a2610ffc4ae1b96926b5da4ba82a4ec3f485987f"
+          }
+        },
+        {
+          "client_id": "264482427000-jgm0t2pn5oas4suvduuc4ch9hbttg2i6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0f2x7ATKJv37kluUZ8yNOpOrR9XIOSFM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264482427000-jgm0t2pn5oas4suvduuc4ch9hbttg2i6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
