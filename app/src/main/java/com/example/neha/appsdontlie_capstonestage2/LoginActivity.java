@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void attemptLogin() {
         if (mAuthTask != null) {
-            Intent startupIntent = new Intent(this, DashboardActivity.class);
+            Intent startupIntent = new Intent(this, MainActivity.class);
             startupIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(startupIntent);
             return;

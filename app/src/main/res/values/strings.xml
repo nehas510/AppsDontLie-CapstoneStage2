@@ -20,4 +20,10 @@
         completions."
     </string>
     <string name="your_details">Basic Details</string>
+    <string name="weight">Current Weight :</string>
+    <string name="steps">Steps Taken :</string>
+    <string name="calories">Calories Burnt :</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
