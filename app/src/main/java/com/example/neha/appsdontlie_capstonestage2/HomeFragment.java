@@ -1,12 +1,41 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.data.DataPoint;
+import com.google.android.gms.fitness.data.DataSource;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.data.Value;
+import com.google.android.gms.fitness.request.DataSourcesRequest;
+import com.google.android.gms.fitness.request.OnDataPointListener;
+import com.google.android.gms.fitness.request.SensorRequest;
+import com.google.android.gms.fitness.result.DataSourcesResult;
+
+import java.util.concurrent.TimeUnit;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -22,6 +51,15 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static final int REQUEST_OAUTH = 1;
+    private static final String AUTH_PENDING = "auth_state_pending";
+    private boolean authInProgress = false;
+    private GoogleApiClient mApiClient;
+    private TextView mStepCounts;
+    private TextView mName;
+    private TextView mCalories;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -54,6 +92,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -63,8 +102,12 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        initViews(rootView);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -74,37 +117,23 @@ public class HomeFragment extends Fragment {
         }
     }
 
-  /*  @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
+    public void initViews(View view){
+        mStepCounts = (TextView) view.findViewById(R.id.step_count);
+        mName = (TextView) view.findViewById(R.id.name);
+        mCalories = (TextView) view.findViewById(R.id.calories_count);
+
+
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-*/
+    
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
