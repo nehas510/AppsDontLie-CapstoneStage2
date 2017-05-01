@@ -1,46 +1,39 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.content.IntentSender;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.fitness.Fitness;
-import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
-import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.fitness.data.Value;
-import com.google.android.gms.fitness.request.DataSourcesRequest;
-import com.google.android.gms.fitness.request.OnDataPointListener;
-import com.google.android.gms.fitness.request.SensorRequest;
 import com.google.android.gms.fitness.result.DailyTotalResult;
-import com.google.android.gms.fitness.result.DataSourcesResult;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 
@@ -66,10 +59,17 @@ public class HomeFragment extends Fragment {
     private TextView mName;
     private TextView mCalories;
     private GoogleApiClient mClient;
+    private FirebaseDatabase mFirebaseDb;
+    private DatabaseReference mDbReference;
+    private ChildEventListener mChildEventListener;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private  String steps, calories;
+    private MyProfileData profileData = new MyProfileData();
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -103,8 +103,56 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        initFirebase();
         mCreateFitnessClientforSteps();
     }
+
+    public void initFirebase(){
+
+        mFirebaseDb = FirebaseDatabase.getInstance();
+        mDbReference = mFirebaseDb.getReference().child("messages");
+
+    }
+
+
+
+
+
+    public void callChildListener(){
+
+        mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                MyProfileData myProfileData = dataSnapshot.getValue(MyProfileData.class);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        mDbReference.addChildEventListener(mChildEventListener);
+
+
+
+    }
+
+
 
     public void mCreateFitnessClientforSteps() {
 
@@ -124,6 +172,7 @@ public class HomeFragment extends Fragment {
                                 //Async To fetch steps
                                 new FetchStepsAsync().execute();
                                 new FetchCalorieAsync().execute();
+
 
                             }
 
@@ -169,7 +218,7 @@ public class HomeFragment extends Fragment {
         mClient.connect();
     }
 
-  
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -204,15 +253,28 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
-    mStepCounts.setText(aLong.toString());
+            profileData.setSteps(aLong.toString());
+            mStepCounts.setText(aLong.toString());
             //Total steps covered for that day
             Log.i(TAG, "Total steps: " + aLong);
 
         }
     }
 
+    public void getSteps(String steps){
+
+        this.steps = steps;
+
+    }
+
+    public void getCalories(String calories){
+
+    this.calories = calories;
+
+    }
 
     private class FetchCalorieAsync extends AsyncTask<Object, Object, Long> {
+
         protected Long doInBackground(Object... params) {
             long total = 0;
             PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(mClient, DataType. TYPE_CALORIES_EXPENDED);
@@ -234,7 +296,10 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
+            profileData.setCalories(aLong.toString());
+            mDbReference.push().setValue(profileData);
           mCalories.setText(aLong.toString());
+
             //Total calories burned for that day
             Log.i(TAG, "Total calories: " + aLong);
 
