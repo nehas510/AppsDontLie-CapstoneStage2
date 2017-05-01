@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,13 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.DataPoint;
+import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
@@ -30,12 +34,14 @@ import com.google.android.gms.fitness.data.Value;
 import com.google.android.gms.fitness.request.DataSourcesRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
+import com.google.android.gms.fitness.result.DailyTotalResult;
 import com.google.android.gms.fitness.result.DataSourcesResult;
 
 import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -59,7 +65,7 @@ public class HomeFragment extends Fragment {
     private TextView mStepCounts;
     private TextView mName;
     private TextView mCalories;
-
+    private GoogleApiClient mClient;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -97,8 +103,73 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mCreateFitnessClientforSteps();
     }
 
+    public void mCreateFitnessClientforSteps() {
+
+        // Create the Google API Client
+         mClient = new GoogleApiClient.Builder(this.getActivity())
+                .addApi(Fitness.HISTORY_API)
+                .addApi(Fitness.CONFIG_API)
+                .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ))
+                .useDefaultAccount()
+                .addConnectionCallbacks(
+                        new GoogleApiClient.ConnectionCallbacks() {
+
+                            @Override
+                            public void onConnected(Bundle bundle) {
+
+
+                                //Async To fetch steps
+                                new FetchStepsAsync().execute();
+                                new FetchCalorieAsync().execute();
+
+                            }
+
+                            @Override
+                            public void onConnectionSuspended(int i) {
+                                // If your connection to the sensor gets lost at some point,
+                                // you'll be able to determine the reason and react to it here.
+                                if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
+                                    Log.i(TAG, "Connection lost.  Cause: Network Lost.");
+                                } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
+                                    Log.i(TAG, "Connection lost.  Reason: Service Disconnected");
+                                }
+                            }
+                        }
+                ).addOnConnectionFailedListener(
+                        new GoogleApiClient.OnConnectionFailedListener() {
+                            // Called whenever the API client fails to connect.
+                            @Override
+                            public void onConnectionFailed(ConnectionResult result) {
+                                Log.i(TAG, "Connection failed. Cause: " + result.toString());
+                                if (!result.hasResolution()) {
+                                    // Show the localized error dialog
+                                    GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(),
+                                            getActivity(), 0).show();
+                                    return;
+                                }
+                                // The failure has a resolution. Resolve it.
+                                // Called typically when the app is not yet authorized, and an
+                                // authorization dialog is displayed to the user.
+                                if (!authInProgress) {
+                                    try {
+                                        Log.i(TAG, "Attempting to resolve failed connection");
+                                        authInProgress = true;
+                                        result.startResolutionForResult(getActivity(), REQUEST_OAUTH);
+                                    } catch (IntentSender.SendIntentException e) {
+                                        Log.e(TAG,
+                                                "Exception while starting resolution activity", e);
+                                    }
+                                }
+                            }
+                        }
+                ).build();
+        mClient.connect();
+    }
+
+  
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,6 +179,66 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+
+    private class FetchStepsAsync extends AsyncTask<Object, Object, Long> {
+        protected Long doInBackground(Object... params) {
+            long total = 0;
+            PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(mClient, DataType.TYPE_STEP_COUNT_DELTA);
+            DailyTotalResult totalResult = result.await(30, TimeUnit.SECONDS);
+            if (totalResult.getStatus().isSuccess()) {
+                DataSet totalSet = totalResult.getTotal();
+                if (totalSet != null) {
+                    total = totalSet.isEmpty()
+                            ? 0
+                            : totalSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+                }
+            } else {
+                Log.w(TAG, "There was a problem getting the step count.");
+            }
+            return total;
+        }
+
+
+        @Override
+        protected void onPostExecute(Long aLong) {
+            super.onPostExecute(aLong);
+    mStepCounts.setText(aLong.toString());
+            //Total steps covered for that day
+            Log.i(TAG, "Total steps: " + aLong);
+
+        }
+    }
+
+
+    private class FetchCalorieAsync extends AsyncTask<Object, Object, Long> {
+        protected Long doInBackground(Object... params) {
+            long total = 0;
+            PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(mClient, DataType. TYPE_CALORIES_EXPENDED);
+            DailyTotalResult totalResult = result.await(30, TimeUnit.SECONDS);
+            if (totalResult.getStatus().isSuccess()) {
+                DataSet totalSet = totalResult.getTotal();
+                if (totalSet != null) {
+                    total = totalSet.isEmpty()
+                            ? 0
+                            : (long) totalSet.getDataPoints().get(0).getValue(Field.FIELD_CALORIES).asFloat();
+                }
+            } else {
+                Log.w(TAG, "There was a problem getting the calories.");
+            }
+            return total;
+        }
+
+
+        @Override
+        protected void onPostExecute(Long aLong) {
+            super.onPostExecute(aLong);
+          mCalories.setText(aLong.toString());
+            //Total calories burned for that day
+            Log.i(TAG, "Total calories: " + aLong);
+
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -126,7 +257,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    
+
 
 
 
