@@ -6,14 +6,17 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
@@ -25,6 +28,8 @@ import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.result.DailyTotalResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,7 +67,9 @@ public class HomeFragment extends Fragment {
     private FirebaseDatabase mFirebaseDb;
     private DatabaseReference mDbReference;
     private ChildEventListener mChildEventListener;
-
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    public static final int RC_SIGN_IN = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -105,16 +112,50 @@ public class HomeFragment extends Fragment {
         }
         initFirebase();
         mCreateFitnessClientforSteps();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user !=null){
+
+                    Toast.makeText(getActivity(),"You are in my app",Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+
+                        startActivityForResult(AuthUI.getInstance()
+                                .createSignInIntentBuilder()
+                                .setIsSmartLockEnabled(false)
+                                .setProviders(AuthUI.EMAIL_PROVIDER,AuthUI.GOOGLE_PROVIDER).build(),RC_SIGN_IN);
+
+
+                }
+            }
+        };
     }
 
     public void initFirebase(){
 
         mFirebaseDb = FirebaseDatabase.getInstance();
-        mDbReference = mFirebaseDb.getReference().child("messages");
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mDbReference = mFirebaseDb.getReference().child("data");
 
     }
 
+    @Override
+    public void onResume(){
 
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onPause(){
+
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthListener);
+    }
 
 
 
