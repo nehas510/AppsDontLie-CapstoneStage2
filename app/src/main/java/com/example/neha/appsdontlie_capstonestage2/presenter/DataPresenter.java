@@ -77,6 +77,7 @@ public class DataPresenter {
                 if(user !=null){
 
                     profileData.setName(user.getDisplayName());
+                    profileData.setUserID(user.getUid());
 
 
                     Toast.makeText(activity,"You are in my app",Toast.LENGTH_SHORT).show();
