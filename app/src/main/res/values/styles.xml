@@ -16,6 +16,14 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="MyNewLogin" parent="FirebaseUI">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColor">@color/primary_text</item>
 
 
     </style>

@@ -37,7 +37,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left|center"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -57,15 +57,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/activity_horizontal_margin"
-
-                android:text="Hi, Neha"
                 android:textSize="20dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left|center"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -87,14 +85,13 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/activity_horizontal_margin"
 
-                android:text="Hi, Neha"
                 android:textSize="20dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left|center"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -113,12 +110,69 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:hint="kgs"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:text="60kgs"
                 android:textSize="20dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:inputType="numberDecimal"
+
+                android:text="@string/height"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/height_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="cms"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/gender"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/gender_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/female_male"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textSize="20dp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+
+</LinearLayout>
 </FrameLayout>

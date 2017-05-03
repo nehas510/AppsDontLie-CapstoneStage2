@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +28,8 @@ public class DashboardFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private DataPresenter presenter;
 
     private OnFragmentInteractionListener mListener;
 
