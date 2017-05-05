@@ -35,4 +35,6 @@
     <string name="last_name">Last Name</string>
     <string name="save_changes">Save Changes</string>
     <string name="sign_out">Sign Out</string>
+    <string name="before">Before</string>
+    <string name="after">After</string>
 </resources>

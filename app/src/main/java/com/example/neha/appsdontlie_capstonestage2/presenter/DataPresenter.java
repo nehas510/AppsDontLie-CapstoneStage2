@@ -33,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -52,13 +53,13 @@ public class DataPresenter {
     private GoogleApiClient mApiClient;
     private GoogleApiClient mClient;
     private FirebaseDatabase mFirebaseDb;
-    private DatabaseReference mDbReference;
+    private DatabaseReference  mDbUserRefernce;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
 
-    private  String steps, calories;
+    private  String steps, calories, userKey;
     private MyProfileData profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
@@ -78,8 +79,7 @@ public class DataPresenter {
 
                     profileData.setName(user.getDisplayName());
                     profileData.setUserID(user.getUid());
-
-
+                    mDbUserRefernce = mFirebaseDb.getReference().child(profileData.getUserID());
                     Toast.makeText(activity,"You are in my app",Toast.LENGTH_SHORT).show();
 
                 }
@@ -115,11 +115,10 @@ public class DataPresenter {
 
         mFirebaseDb = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mDbReference = mFirebaseDb.getReference().child("data");
 
     }
 
-    public void callChildListener(){
+  /*  public void callChildListener(){
 
         mChildEventListener = new ChildEventListener() {
             @Override
@@ -152,6 +151,7 @@ public class DataPresenter {
 
 
     }
+    */
     public void mCreateFitnessClientforSteps() {
 
         // Create the Google API Client
@@ -239,6 +239,7 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setSteps(aLong.toString());
+
             //Total steps covered for that day
             Log.i(TAG, "Total steps: " + aLong);
 
@@ -269,7 +270,7 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setCalories(aLong.toString());
-            mDbReference.push().setValue(profileData);
+            setValueToDB();
 
             //Total calories burned for that day
             Log.i(TAG, "Total calories: " + aLong);
@@ -277,9 +278,22 @@ public class DataPresenter {
         }
 
 
+    }
 
+
+    public void setValueToDB(){
+
+
+        mDbUserRefernce.setValue(profileData);
+    }
+
+
+  /*  public void addNewUserwithData(){
+
+        mDbUserRefernce.push().setValue(profileData);
 
     }
+    */
 
     public MyProfileData loadData(){
 
