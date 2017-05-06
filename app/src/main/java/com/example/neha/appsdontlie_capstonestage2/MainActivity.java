@@ -62,10 +62,8 @@ public class MainActivity extends AppCompatActivity {
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
         mPresenter.initAuthListener();
-        mPresenter.mCreateFitnessClientforSteps();
+      //  mPresenter.mCreateFitnessClientforSteps();
 
-      //  mPresenter.addNewUserwithData();
-       // mPresenter.callChildListener();
 
          navigation = (BottomNavigationView) findViewById(R.id.navigation);
            // navigation.inflateMenu(R.menu.navigation);

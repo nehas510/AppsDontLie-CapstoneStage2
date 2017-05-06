@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.neha.appsdontlie_capstonestage2.HomeFragment;
 import com.example.neha.appsdontlie_capstonestage2.MainActivity;
 import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
@@ -56,11 +57,12 @@ public class DataPresenter {
     private DatabaseReference  mDbUserRefernce;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
+    private Fragment fragment;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
 
     private  String steps, calories, userKey;
-    private MyProfileData profileData = new MyProfileData();
+    private MyProfileData  readProfileData = new MyProfileData(), profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
 
@@ -94,6 +96,8 @@ public class DataPresenter {
 
 
                 }
+
+               mCreateFitnessClientforSteps();
             }
         };
 
@@ -123,11 +127,16 @@ public class DataPresenter {
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                MyProfileData myProfileData = dataSnapshot.getValue(MyProfileData.class);
+              // readProfileData = dataSnapshot.getValue(MyProfileData.class);
+
+
+
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                readProfileData = dataSnapshot.getValue(MyProfileData.class);
+
 
             }
 
@@ -146,12 +155,13 @@ public class DataPresenter {
 
             }
         };
-        mDbReference.addChildEventListener(mChildEventListener);
+        mDbUserRefernce.addChildEventListener(mChildEventListener);
 
 
 
     }
     */
+
     public void mCreateFitnessClientforSteps() {
 
         // Create the Google API Client
@@ -270,7 +280,8 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setCalories(aLong.toString());
-            setValueToDB();
+            mDbUserRefernce.setValue(profileData);
+
 
             //Total calories burned for that day
             Log.i(TAG, "Total calories: " + aLong);
@@ -281,12 +292,16 @@ public class DataPresenter {
     }
 
 
-    public void setValueToDB(){
 
 
-        mDbUserRefernce.setValue(profileData);
+    public MyProfileData loadData(){
+
+      /*  if(readProfileData.getUserID() == null)
+            return profileData;
+        else*/
+            return profileData;
+
     }
-
 
   /*  public void addNewUserwithData(){
 
@@ -295,11 +310,6 @@ public class DataPresenter {
     }
     */
 
-    public MyProfileData loadData(){
-
-
-        return profileData;
-    }
 
 
 }

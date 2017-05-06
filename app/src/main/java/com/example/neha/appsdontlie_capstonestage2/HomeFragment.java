@@ -95,6 +95,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+       // hPresenter.callChildListener();
         data = hPresenter.loadData();
 
         // Inflate the layout for this fragment
@@ -102,8 +103,6 @@ public class HomeFragment extends Fragment {
         showData(data);
         return rootView;
     }
-
-
 
 
     // TODO: Rename method, update argument and hook method into UI event
