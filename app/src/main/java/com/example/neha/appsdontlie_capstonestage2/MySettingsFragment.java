@@ -1,15 +1,16 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import android.widget.EditText;
+import android.widget.Toast;
+import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
+import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
  * Use the {@link MySettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class MySettingsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +31,9 @@ public class MySettingsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Button mSignOut;
+    private DataPresenter sPresenter;
+    private Button mSignOut, mSaveChanges;
+    private EditText mFirstName, mLastName, mWeight, mHeight , mGender;
 
   //  private OnFragmentInteractionListener mListener;
 
@@ -58,6 +62,8 @@ public class MySettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sPresenter = new DataPresenter(this);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -69,8 +75,9 @@ public class MySettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_my_settings, container, false);
+        initViews(rootView);
 
-        mSignOut = (Button) rootView.findViewById(R.id.sign_out);
+        mSaveChanges.setOnClickListener(saveChanges);
 
         mSignOut.setOnClickListener(signOutButton);
 
@@ -78,43 +85,54 @@ public class MySettingsFragment extends Fragment {
     }
 
 
+    private View.OnClickListener saveChanges = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            sPresenter.setData(pushData());
+            Toast.makeText(getContext(),"Changes saved",Toast.LENGTH_SHORT).show();
+
+
+        }
+    };
+
     private View.OnClickListener signOutButton = new View.OnClickListener() {
         public void onClick(View v) {
             FirebaseAuth.getInstance().signOut();
 
-        };
+        }
 
     };
+
+
+    private void initViews(View rootView){
+
+        mSignOut = (Button) rootView.findViewById(R.id.sign_out);
+        mSaveChanges = (Button) rootView.findViewById(R.id.save_changes);
+        mFirstName = (EditText) rootView.findViewById(R.id.first_name_fill);
+        mLastName = (EditText) rootView.findViewById(R.id.last_name_fill);
+        mWeight = (EditText) rootView.findViewById(R.id.weight_fill);
+        mHeight = (EditText) rootView.findViewById(R.id.height_fill);
+        mGender = (EditText) rootView.findViewById(R.id.gender_fill);
+
+
+    }
+
+
+    private MyProfileData pushData(){
+
+        MyProfileData data = new MyProfileData();
+
+        data.setName(mFirstName.getText().toString());
+        data.setLastName(mLastName.getText().toString());
+        data.setWeight(mWeight.getText().toString());
+        data.setHeight(mHeight.getText().toString());
+        data.setGender(mGender.getText().toString());
+
+        return data;
+
+
+
+
+    }
 }
-
-
-  /*  @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-*/
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 

@@ -2,6 +2,7 @@ package com.example.neha.appsdontlie_capstonestage2;
 
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,11 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -42,6 +47,7 @@ public class HomeFragment extends Fragment {
     private TextView mWeight;
     private TextView mHeight;
     private TextView mGender;
+    private ImageButton mPhoto;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -97,9 +103,20 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
        // hPresenter.callChildListener();
         data = hPresenter.loadData();
-
         // Inflate the layout for this fragment
         initViews(rootView);
+        mPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Fire an intent to show an image picker
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                hPresenter.photoPicker(HomeFragment.this,intent);
+                mPhoto.setClickable(false);
+
+
+            }
+        });
         showData(data);
         return rootView;
     }
@@ -120,33 +137,51 @@ public class HomeFragment extends Fragment {
     }
 
     public void initViews(View view){
+
         mStepCounts = (TextView) view.findViewById(R.id.step_count);
-        mName = (TextView) view.findViewById(R.id.message);
-        mCalories = (TextView) view.findViewById(R.id.calories_count);
-        mWeight = (TextView) view.findViewById(R.id.weight_value);
-        mHeight = (TextView) view.findViewById(R.id.height_value);
-        mGender = (TextView) view.findViewById(R.id.gender_value);
+        mName =       (TextView) view.findViewById(R.id.name_first);
+        mCalories =   (TextView) view.findViewById(R.id.calories_count);
+        mWeight =     (TextView) view.findViewById(R.id.weight_value);
+        mHeight =     (TextView) view.findViewById(R.id.height_value);
+        mGender =     (TextView) view.findViewById(R.id.gender_value);
+        mPhoto =      (ImageButton) view.findViewById(R.id.imageViewPhoto);
 
+    }
 
+    public void setPhoto(String url){
 
-
-
+        if(data.getNewPhotoUrl() != null){
+            Picasso.with(getContext())
+                    .load(url)
+                    .fit()
+                    .into(mPhoto);
     }
 
 
 
-
-
-
-
-
+    }
 
     public void showData(MyProfileData data){
 
         mStepCounts.setText(data.getSteps());
         mName.setText(data.getName());
         mCalories.setText(data.getCalories());
+        if(data.getNewPhotoUrl() !=null)
+        {
+            setPhoto(data.getNewPhotoUrl());
+
+        }
+
+
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        hPresenter.onActivityResult(HomeFragment.this,requestCode,resultCode,data);
+
+    }
+
 
 }

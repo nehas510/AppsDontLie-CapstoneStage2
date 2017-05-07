@@ -1,5 +1,6 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
+import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -102,18 +103,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    public void onResume(){
+    protected void onResume(){
 
         super.onResume();
         mPresenter.onResumeEvent();
     }
 
     @Override
-    public void onPause(){
+    protected void onPause(){
 
         super.onPause();
         mPresenter.onPauseEvent();
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+    }
 
 }

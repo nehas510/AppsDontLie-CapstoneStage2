@@ -6,6 +6,7 @@ package com.example.neha.appsdontlie_capstonestage2.data;
 
 public class MyProfileData {
     private String name;
+    private String last_name;
     private String userID;
     private String gender;
     private String old_photo_url;
@@ -18,9 +19,10 @@ public class MyProfileData {
 
     public MyProfileData(){}
 
-    public MyProfileData(String name,String userID,String gender,String old_photo_url,String new_photo_url,String weight,String height,String password,String step_counts,String calories){
+    public MyProfileData(String name,String last_name,String userID,String gender,String old_photo_url,String new_photo_url,String weight,String height,String password,String step_counts,String calories){
 
         this.name = name;
+        this.last_name = last_name;
         this.userID = userID;
         this.gender = gender;
         this.old_photo_url = old_photo_url;
@@ -31,6 +33,17 @@ public class MyProfileData {
         this.step_counts = step_counts;
         this.calories = calories;
 
+    }
+
+    public String getLastName(){
+
+        return  last_name;
+    }
+
+    public  void setLastName(String last_name){
+
+
+        this.last_name = last_name;
     }
 
     public String getName(){
