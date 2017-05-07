@@ -105,18 +105,8 @@ public class HomeFragment extends Fragment {
         data = hPresenter.loadData();
         // Inflate the layout for this fragment
         initViews(rootView);
-        mPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: Fire an intent to show an image picker
-
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                hPresenter.photoPicker(HomeFragment.this,intent);
-                mPhoto.setClickable(false);
 
 
-            }
-        });
         showData(data);
         return rootView;
     }
@@ -166,12 +156,26 @@ public class HomeFragment extends Fragment {
         mStepCounts.setText(data.getSteps());
         mName.setText(data.getName());
         mCalories.setText(data.getCalories());
-        if(data.getNewPhotoUrl() !=null)
-        {
-            setPhoto(data.getNewPhotoUrl());
 
-        }
+       if(data.getNewPhotoUrl() == null) {
+           mPhoto.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   // TODO: Fire an intent to show an image picker
 
+                   Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                   hPresenter.photoPicker(HomeFragment.this, intent);
+                   mPhoto.setClickable(false);
+
+
+               }
+           });
+       }
+
+       else {
+           mPhoto.setClickable(false);
+           setPhoto(data.getNewPhotoUrl());
+       }
 
 
     }

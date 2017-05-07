@@ -342,26 +342,15 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
         @Override
         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
             Uri downloadUrl = taskSnapshot.getDownloadUrl();
             Toast.makeText(activity,"uploaded the data to " + downloadUrl,Toast.LENGTH_SHORT).show();
             profileData.setNewPhotoUrl(downloadUrl.toString());
-            mDbUserRefernce.setValue(profileData.getNewPhotoUrl());
             ((HomeFragment)frag).setPhoto(profileData.getNewPhotoUrl());
 
 
         }
     });
-          /*  .addOnSuccessListener((Executor) this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // When the image has successfully uploaded, we get its download URL
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
-                    // Set the download URL to the message box, so that the user can send it to the database
-                    profileData.setNewPhotoUrl(downloadUrl.toString());
-                   mDbUserRefernce.push().setValue(profileData);
-                }
-            });*/
 }
 
 
