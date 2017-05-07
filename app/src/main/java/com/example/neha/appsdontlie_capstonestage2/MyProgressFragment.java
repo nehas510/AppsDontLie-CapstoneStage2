@@ -1,12 +1,19 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
+import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -26,6 +33,11 @@ public class MyProgressFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView mBefore;
+    private TextView mAfter;
+    private DataPresenter pPresenter;
+    private ImageView mImageViewBefore , mImageViewAfter;
+    private MyProfileData data;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,7 +76,11 @@ public class MyProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_progress, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_my_progress, container, false);
+        data = pPresenter.loadData();
+        initViews(rootView);
+        showdata(data);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -74,24 +90,30 @@ public class MyProgressFragment extends Fragment {
         }
     }
 
- /*   @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+ private void initViews(View view){
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-*/
+     mAfter = (TextView) view.findViewById(R.id.textAfter);
+     mBefore = (TextView) view.findViewById(R.id.textBefore);
+     mImageViewAfter = (ImageView) view.findViewById(R.id.imageViewAfter);
+     mImageViewBefore = (ImageView) view.findViewById(R.id.imageViewBefore);
+ }
 
+
+ private void showdata(MyProfileData data){
+
+     Picasso.with(getContext())
+             .load(data.getNewPhotoUrl())
+             .fit()
+             .into(mImageViewAfter);
+
+     Picasso.with(getContext())
+             .load(data.getOldPhotoUrl())
+             .fit()
+             .into(mImageViewBefore);
+
+
+
+ }
 
     /**
      * This interface must be implemented by activities that contain this

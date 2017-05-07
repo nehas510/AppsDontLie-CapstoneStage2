@@ -73,6 +73,7 @@ public class DataPresenter {
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
     private static final int RC_PHOTO_PICKER = 2;
+    private boolean newUser = true;
 
 
     private  String steps, calories, userKey;
@@ -344,7 +345,22 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
             Uri downloadUrl = taskSnapshot.getDownloadUrl();
             Toast.makeText(activity,"uploaded the data to " + downloadUrl,Toast.LENGTH_SHORT).show();
-            profileData.setNewPhotoUrl(downloadUrl.toString());
+            String newPhotoUrl = downloadUrl.toString();
+
+            if(newUser){
+                profileData.setOldPhotoUrl(newPhotoUrl);
+                profileData.setNewPhotoUrl(newPhotoUrl);
+                newUser = false;
+
+            }
+
+            else {
+                String oldphotoUrl = profileData.getNewPhotoUrl();
+                profileData.setOldPhotoUrl(oldphotoUrl);
+                profileData.setNewPhotoUrl(newPhotoUrl);
+
+            }
+
             ((HomeFragment)frag).setPhoto(profileData.getNewPhotoUrl());
 
 

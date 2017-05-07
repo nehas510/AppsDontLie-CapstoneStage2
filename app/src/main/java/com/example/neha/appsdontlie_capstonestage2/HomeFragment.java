@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void initViews(View view){
+    private void initViews(View view){
 
         mStepCounts = (TextView) view.findViewById(R.id.step_count);
         mName =       (TextView) view.findViewById(R.id.name_first);
@@ -151,7 +151,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void showData(MyProfileData data){
+    private void showData(MyProfileData data){
 
         mStepCounts.setText(data.getSteps());
         mName.setText(data.getName());
