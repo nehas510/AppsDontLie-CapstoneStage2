@@ -6,45 +6,29 @@ package com.example.neha.appsdontlie_capstonestage2.data;
 
 public class MyProfileData {
     private String name;
-    private String last_name;
-    private String userID;
     private String gender;
     private String old_photo_url;
     private String new_photo_url;
     private String weight;
     private String height;
-    private String password;
     private String step_counts;
     private String calories;
 
     public MyProfileData(){}
 
-    public MyProfileData(String name,String last_name,String userID,String gender,String old_photo_url,String new_photo_url,String weight,String height,String password,String step_counts,String calories){
+    public MyProfileData(String name,String gender,String old_photo_url,String new_photo_url,String weight,String height,String step_counts,String calories){
 
         this.name = name;
-        this.last_name = last_name;
-        this.userID = userID;
         this.gender = gender;
         this.old_photo_url = old_photo_url;
         this.new_photo_url = new_photo_url;
         this.weight = weight;
         this.height = height;
-        this.password = password;
         this.step_counts = step_counts;
         this.calories = calories;
 
     }
 
-    public String getLastName(){
-
-        return  last_name;
-    }
-
-    public  void setLastName(String last_name){
-
-
-        this.last_name = last_name;
-    }
 
     public String getName(){
 
@@ -56,16 +40,6 @@ public class MyProfileData {
         this.name = name;
     }
 
-
-    public String getUserID(){
-
-        return userID;
-    }
-
-    public void setUserID(String userID){
-
-        this.userID = userID;
-    }
 
     public String getGender(){
 
@@ -116,15 +90,7 @@ public class MyProfileData {
 
         this.height = height;
     }
-    public String getPassword(){
 
-        return password;
-    }
-
-    public void setPassword(String password){
-
-        this.password = password;
-    }
     public String getSteps(){
 
         return step_counts;

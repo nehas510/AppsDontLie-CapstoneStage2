@@ -60,14 +60,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
         mPresenter.initAuthListener();
-      //  mPresenter.mCreateFitnessClientforSteps();
 
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content, new HomeFragment(mPresenter))
+                    .commit();
 
-         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-           // navigation.inflateMenu(R.menu.navigation);
+        }
+        
+            navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -84,11 +90,12 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new DashboardFragment();
                         break;
                     case R.id.navigation_notifications:
-                        fragment = new MyProgressFragment();
+                        fragment = new MyProgressFragment(mPresenter);
                         break;
                     case R.id.navigation_settings:
-                        fragment = new MySettingsFragment();
+                        fragment = new MySettingsFragment(mPresenter);
                         break;
+
                 }
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.content,fragment).commit();
@@ -97,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+
 
 
     }

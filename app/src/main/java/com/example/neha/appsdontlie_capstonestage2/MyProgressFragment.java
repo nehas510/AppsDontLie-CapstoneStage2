@@ -45,6 +45,12 @@ public class MyProgressFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public MyProgressFragment(DataPresenter presenter) {
+
+        pPresenter = presenter;
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -77,9 +83,9 @@ public class MyProgressFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_my_progress, container, false);
-        data = pPresenter.loadData();
+      //  data = pPresenter.loadData();
         initViews(rootView);
-        showdata(data);
+       // showdata(data);
         return rootView;
     }
 

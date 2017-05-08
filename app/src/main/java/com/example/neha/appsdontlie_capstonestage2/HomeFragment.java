@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private MyProfileData data, data1;
+    private MyProfileData data;
     private DataPresenter hPresenter;
 
 
@@ -62,9 +62,7 @@ public class HomeFragment extends Fragment {
         this.hPresenter = presenter;
     }
 
-    public  HomeFragment(){
 
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -75,15 +73,15 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+  /*  public static HomeFragment newInstance(String param1, String param2) {
+      //  HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
+*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,13 +99,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-       // hPresenter.callChildListener();
-        data = hPresenter.loadData();
         // Inflate the layout for this fragment
         initViews(rootView);
-
-
-        showData(data);
+      //  showData(data);
         return rootView;
     }
 

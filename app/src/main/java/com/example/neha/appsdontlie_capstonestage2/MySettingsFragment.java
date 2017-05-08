@@ -33,14 +33,19 @@ public class MySettingsFragment extends Fragment {
     private String mParam2;
     private DataPresenter sPresenter;
     private Button mSignOut, mSaveChanges;
-    private EditText mFirstName, mLastName, mWeight, mHeight , mGender;
+    private EditText mWeight, mHeight, mGender;
 
-  //  private OnFragmentInteractionListener mListener;
+    //  private OnFragmentInteractionListener mListener;
 
     public MySettingsFragment() {
         // Required empty public constructor
     }
 
+    public MySettingsFragment(DataPresenter presenter) {
+
+        this.sPresenter = presenter;
+        // Required empty public constructor
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -62,8 +67,6 @@ public class MySettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        sPresenter = new DataPresenter(this);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -88,8 +91,8 @@ public class MySettingsFragment extends Fragment {
     private View.OnClickListener saveChanges = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            sPresenter.setData(pushData());
-            Toast.makeText(getContext(),"Changes saved",Toast.LENGTH_SHORT).show();
+            pushData();
+            Toast.makeText(getContext(), "Changes saved", Toast.LENGTH_SHORT).show();
 
 
         }
@@ -104,12 +107,10 @@ public class MySettingsFragment extends Fragment {
     };
 
 
-    private void initViews(View rootView){
+    private void initViews(View rootView) {
 
         mSignOut = (Button) rootView.findViewById(R.id.sign_out);
         mSaveChanges = (Button) rootView.findViewById(R.id.save_changes);
-        mFirstName = (EditText) rootView.findViewById(R.id.first_name_fill);
-        mLastName = (EditText) rootView.findViewById(R.id.last_name_fill);
         mWeight = (EditText) rootView.findViewById(R.id.weight_fill);
         mHeight = (EditText) rootView.findViewById(R.id.height_fill);
         mGender = (EditText) rootView.findViewById(R.id.gender_fill);
@@ -118,21 +119,17 @@ public class MySettingsFragment extends Fragment {
     }
 
 
-    private MyProfileData pushData(){
+    private void pushData() {
 
-        MyProfileData data = new MyProfileData();
+        String weight, height, gender;
+        weight = (mWeight.getText().toString());
+        height = (mHeight.getText().toString());
+        gender = (mGender.getText().toString());
 
-        data.setName(mFirstName.getText().toString());
-        data.setLastName(mLastName.getText().toString());
-        data.setWeight(mWeight.getText().toString());
-        data.setHeight(mHeight.getText().toString());
-        data.setGender(mGender.getText().toString());
-
-        return data;
-
-
+        sPresenter.setData(weight, height, gender);
 
 
     }
+
 }
 

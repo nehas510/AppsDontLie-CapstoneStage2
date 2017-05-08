@@ -65,7 +65,7 @@ public class DataPresenter {
     private GoogleApiClient mClient;
     private FirebaseDatabase mFirebaseDb;
     private DatabaseReference  mDbUserRefernce;
-    private ChildEventListener mChildEventListener;
+    private ValueEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mStorageRefernce;
@@ -74,10 +74,11 @@ public class DataPresenter {
     public static final int RC_SIGN_IN = 1;
     private static final int RC_PHOTO_PICKER = 2;
     private boolean newUser = true;
+    private static String pushID;
 
 
     private  String steps, calories, userKey;
-    private MyProfileData  readProfileData = new MyProfileData(), profileData = new MyProfileData();
+    private MyProfileData profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
 
@@ -141,34 +142,22 @@ public class DataPresenter {
         mFirebaseDb = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance("gs://capstone-project-20ec5.appspot.com/");
-        mDbUserRefernce = mFirebaseDb.getReference().child("data");
+        mDbUserRefernce = mFirebaseDb.getReference().child("Users");
         mStorageRefernce = mFirebaseStorage.getReference().child("photos");
 
 
     }
 
+
+
     public void callChildListener(){
         if (mChildEventListener == null) {
-            mChildEventListener = new ChildEventListener() {
+            mChildEventListener = new ValueEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    MyProfileData readData = dataSnapshot.getValue(MyProfileData.class);
 
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
                 }
 
@@ -177,9 +166,13 @@ public class DataPresenter {
 
                 }
             };
-            mDbUserRefernce.addChildEventListener(mChildEventListener);
+
+            mDbUserRefernce.addValueEventListener(mChildEventListener);
+
 
         }
+
+
 
     }
 
@@ -271,6 +264,7 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setSteps(aLong.toString());
+            mDbUserRefernce.getRef().child(pushID).child("steps").setValue(profileData.getSteps());
 
             //Total steps covered for that day
             Log.i(TAG, "Total steps: " + aLong);
@@ -302,6 +296,7 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setCalories(aLong.toString());
+            mDbUserRefernce.getRef().child(pushID).child("calories").setValue(profileData.getCalories());
 
 
             //Total calories burned for that day
@@ -312,13 +307,14 @@ public class DataPresenter {
 
     }
 
-public void setData(MyProfileData settingsData){
+public void setData(String weight, String height, String gender){
 
-    mDbUserRefernce.child("FirstName").setValue(settingsData.getName());
-    mDbUserRefernce.child("Lastname").setValue(settingsData.getLastName());
-    mDbUserRefernce.child("Weight").setValue(settingsData.getWeight());
-    mDbUserRefernce.child("Height").setValue(settingsData.getHeight());
-    mDbUserRefernce.child("gender").setValue(settingsData.getGender());
+    profileData.setWeight(weight);
+    profileData.setWeight(height);
+    profileData.setGender(gender);
+    mDbUserRefernce.getRef().child(pushID).child("weight").setValue(profileData.getWeight());
+    mDbUserRefernce.getRef().child(pushID).child("height").setValue(profileData.getHeight());
+    mDbUserRefernce.getRef().child(pushID).child("gender").setValue(profileData.getGender());
 
 
 }
@@ -350,6 +346,9 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
             if(newUser){
                 profileData.setOldPhotoUrl(newPhotoUrl);
                 profileData.setNewPhotoUrl(newPhotoUrl);
+                mDbUserRefernce.getRef().child(pushID).child("oldURL").setValue(profileData.getOldPhotoUrl());
+                mDbUserRefernce.getRef().child(pushID).child("newURL").setValue(profileData.getNewPhotoUrl());
+
                 newUser = false;
 
             }
@@ -358,6 +357,10 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
                 String oldphotoUrl = profileData.getNewPhotoUrl();
                 profileData.setOldPhotoUrl(oldphotoUrl);
                 profileData.setNewPhotoUrl(newPhotoUrl);
+                mDbUserRefernce.getRef().child(pushID).child("oldURL").setValue(profileData.getOldPhotoUrl());
+                mDbUserRefernce.getRef().child(pushID).child("newURL").setValue(profileData.getNewPhotoUrl());
+
+
 
             }
 
@@ -398,17 +401,13 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
             }
 
     }
-    public MyProfileData loadData(){
 
-            return profileData;
-
-    }
 
   public void onSigninInitialize(FirebaseUser user){
 
+      pushID = user.getUid();
       profileData.setName(user.getDisplayName());
-      profileData.setUserID(user.getUid());
-      mDbUserRefernce = mFirebaseDb.getReference().child(profileData.getUserID());
+      mDbUserRefernce.getRef().child(pushID).setValue(profileData.getName());
       callChildListener();
   }
 
