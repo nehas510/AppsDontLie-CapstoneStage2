@@ -100,6 +100,7 @@ public class MySettingsFragment extends Fragment {
 
     private View.OnClickListener signOutButton = new View.OnClickListener() {
         public void onClick(View v) {
+
             FirebaseAuth.getInstance().signOut();
 
         }

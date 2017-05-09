@@ -7,9 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,7 +31,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,12 +41,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Arrays;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
+import static android.content.Context.TELEPHONY_SERVICE;
 
 /**
  * Created by neha on 5/3/17.
@@ -69,27 +66,20 @@ public class DataPresenter {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mStorageRefernce;
-    private Fragment fragment;
+   // private Fragment fragment;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
     private static final int RC_PHOTO_PICKER = 2;
     private boolean newUser = true;
     private static String pushID;
-
-
     private  String steps, calories, userKey;
-    private MyProfileData profileData = new MyProfileData();
+    private MyProfileData  readData, profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
-
            activity = mView;
 
     }
 
-    public DataPresenter(Fragment mfrag){
-
-        fragment = mfrag;
-    }
 
     public void initAuthListener(){
 
@@ -116,12 +106,11 @@ public class DataPresenter {
 
                 }
 
-               mCreateFitnessClientforSteps();
+
             }
         };
 
     }
-
 
     public void onResumeEvent(){
 
@@ -144,19 +133,21 @@ public class DataPresenter {
         mFirebaseStorage = FirebaseStorage.getInstance("gs://capstone-project-20ec5.appspot.com/");
         mDbUserRefernce = mFirebaseDb.getReference().child("Users");
         mStorageRefernce = mFirebaseStorage.getReference().child("photos");
+        initAuthListener();
 
 
     }
-
-
 
     public void callChildListener(){
         if (mChildEventListener == null) {
             mChildEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                     readData =  dataSnapshot.child(pushID).getValue(MyProfileData.class);
+                    ((MainActivity)activity).readData(readData);
 
-                    MyProfileData readData = dataSnapshot.getValue(MyProfileData.class);
+
+
 
 
                 }
@@ -169,10 +160,7 @@ public class DataPresenter {
 
             mDbUserRefernce.addValueEventListener(mChildEventListener);
 
-
         }
-
-
 
     }
 
@@ -190,12 +178,8 @@ public class DataPresenter {
 
                             @Override
                             public void onConnected(Bundle bundle) {
-
-
                                 //Async To fetch steps
                                 new FetchStepsAsync().execute();
-                                new FetchCalorieAsync().execute();
-
 
                             }
 
@@ -264,11 +248,10 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setSteps(aLong.toString());
-            mDbUserRefernce.getRef().child(pushID).child("steps").setValue(profileData.getSteps());
-
+            new FetchCalorieAsync().execute();
+          //  mDbUserRefernce.getRef().child(pushID).child("steps").setValue(profileData.getSteps());
             //Total steps covered for that day
             Log.i(TAG, "Total steps: " + aLong);
-
         }
     }
 
@@ -296,9 +279,9 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setCalories(aLong.toString());
-            mDbUserRefernce.getRef().child(pushID).child("calories").setValue(profileData.getCalories());
+            mDbUserRefernce.getRef().child(pushID).setValue(profileData);
 
-
+            callChildListener();
             //Total calories burned for that day
             Log.i(TAG, "Total calories: " + aLong);
 
@@ -348,7 +331,6 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
                 profileData.setNewPhotoUrl(newPhotoUrl);
                 mDbUserRefernce.getRef().child(pushID).child("oldURL").setValue(profileData.getOldPhotoUrl());
                 mDbUserRefernce.getRef().child(pushID).child("newURL").setValue(profileData.getNewPhotoUrl());
-
                 newUser = false;
 
             }
@@ -360,13 +342,9 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
                 mDbUserRefernce.getRef().child(pushID).child("oldURL").setValue(profileData.getOldPhotoUrl());
                 mDbUserRefernce.getRef().child(pushID).child("newURL").setValue(profileData.getNewPhotoUrl());
 
-
-
             }
 
             ((HomeFragment)frag).setPhoto(profileData.getNewPhotoUrl());
-
-
         }
     });
 
@@ -374,8 +352,6 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
 
 
    public void photoPicker(Fragment frag,Intent intent){
-
-
     intent.setType("image/jpeg");
     intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
     frag.startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
@@ -403,11 +379,14 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
     }
 
 
+
+
   public void onSigninInitialize(FirebaseUser user){
 
       pushID = user.getUid();
       profileData.setName(user.getDisplayName());
-      mDbUserRefernce.getRef().child(pushID).setValue(profileData.getName());
+      mCreateFitnessClientforSteps();
+
       callChildListener();
   }
 

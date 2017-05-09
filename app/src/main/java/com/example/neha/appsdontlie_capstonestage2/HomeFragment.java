@@ -4,23 +4,13 @@ package com.example.neha.appsdontlie_capstonestage2;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
@@ -35,6 +25,7 @@ import com.squareup.picasso.Picasso;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,11 +49,12 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public HomeFragment(DataPresenter presenter){
+    public HomeFragment(DataPresenter presenter,MyProfileData data){
         this.hPresenter = presenter;
+        this.data = data;
     }
 
-
+public HomeFragment(){}
 
     /**
      * Use this factory method to create a new instance of
@@ -73,15 +65,15 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-  /*  public static HomeFragment newInstance(String param1, String param2) {
-      //  HomeFragment fragment = new HomeFragment();
+    public static HomeFragment newInstance(String param1, String param2) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-*/
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,9 +91,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        // Inflate the layout for this fragment
+
         initViews(rootView);
-      //  showData(data);
+        showData(data);
         return rootView;
     }
 
@@ -145,7 +137,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void showData(MyProfileData data){
+    public void showData(MyProfileData data){
 
         mStepCounts.setText(data.getSteps());
         mName.setText(data.getName());
