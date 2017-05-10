@@ -125,11 +125,12 @@ public HomeFragment(){}
 
     }
 
-    public void setPhoto(String url){
+    private void setPhoto(String url){
 
         if(data.getNewUrl() != null){
             Picasso.with(getContext())
                     .load(url)
+                    .error(R.drawable.profile_pic)
                     .fit()
                     .into(mPhoto);
     }
@@ -138,7 +139,7 @@ public HomeFragment(){}
 
     }
 
-    public void showData(MyProfileData data){
+    private void showData(MyProfileData data){
 
         mStepCounts.setText(data.getSteps());
         mName.setText(data.getName());

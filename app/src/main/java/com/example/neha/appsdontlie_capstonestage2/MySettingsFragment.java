@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -84,6 +86,10 @@ public class MySettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_my_settings, container, false);
         initViews(rootView);
+        if(readData.getWeight()!=null)
+            showData();
+
+
 
 
         mSaveChanges.setOnClickListener(saveChanges);
@@ -121,14 +127,19 @@ public class MySettingsFragment extends Fragment {
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                         sPresenter.photoPicker(MySettingsFragment.this, intent);
 
-            if(readData.getOldUrl()!=null)
-                mPhoto.setClickable(false);
 
 
         }
 
     };
 
+    public void setPhoto(String url){
+
+            Picasso.with(getContext())
+                    .load(url)
+                    .fit()
+                    .into(mPhoto);
+        }
 
     private void initViews(View rootView) {
 
@@ -143,6 +154,17 @@ public class MySettingsFragment extends Fragment {
 
     }
 
+    private void showData(){
+
+        mWeight.setText(readData.getWeight());
+        mHeight.setText(readData.getHeight());
+        mGender.setText(readData.getGender());
+        setPhoto(readData.getNewUrl());
+        mPhoto.setClickable(false);
+        mSaveChanges.setClickable(false);
+
+
+    }
 
     private void pushData() {
 
