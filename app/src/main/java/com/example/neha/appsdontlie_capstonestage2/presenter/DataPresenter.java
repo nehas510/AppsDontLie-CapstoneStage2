@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -138,16 +139,19 @@ public class DataPresenter {
 
     }
 
-    public void callChildListener(){
+
+
+
+    public void callChildListener() {
         if (mChildEventListener == null) {
             mChildEventListener = new ValueEventListener() {
+
+
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                     readData =  dataSnapshot.child(pushID).getValue(MyProfileData.class);
-                    ((MainActivity)activity).readData(readData);
 
-
-
+                    readData = dataSnapshot.child(pushID).getValue(MyProfileData.class);
+                    ((MainActivity) activity).readData(readData);
 
 
                 }
@@ -156,12 +160,12 @@ public class DataPresenter {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
-            };
 
+
+            };
             mDbUserRefernce.addValueEventListener(mChildEventListener);
 
         }
-
     }
 
 
@@ -279,9 +283,9 @@ public class DataPresenter {
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
             profileData.setCalories(aLong.toString());
-            mDbUserRefernce.getRef().child(pushID).setValue(profileData);
-
-            callChildListener();
+            mDbUserRefernce.getRef().child(pushID).child("name").setValue(profileData.getName());
+            mDbUserRefernce.getRef().child(pushID).child("steps").setValue(profileData.getSteps());
+            mDbUserRefernce.getRef().child(pushID).child("calories").setValue(profileData.getCalories());
             //Total calories burned for that day
             Log.i(TAG, "Total calories: " + aLong);
 
@@ -293,7 +297,7 @@ public class DataPresenter {
 public void setData(String weight, String height, String gender){
 
     profileData.setWeight(weight);
-    profileData.setWeight(height);
+    profileData.setHeight(height);
     profileData.setGender(gender);
     mDbUserRefernce.getRef().child(pushID).child("weight").setValue(profileData.getWeight());
     mDbUserRefernce.getRef().child(pushID).child("height").setValue(profileData.getHeight());
@@ -302,7 +306,7 @@ public void setData(String weight, String height, String gender){
 
 }
 
-public void uploadProfilePhoto(final Fragment frag, Intent data){
+public void uploadProfilePhoto(Intent data){
 
     Uri selectedImageUri = data.getData();
 
@@ -325,26 +329,28 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
             Uri downloadUrl = taskSnapshot.getDownloadUrl();
             Toast.makeText(activity,"uploaded the data to " + downloadUrl,Toast.LENGTH_SHORT).show();
             String newPhotoUrl = downloadUrl.toString();
+           // String xyz = "xyz";
 
-            if(newUser){
-                profileData.setOldPhotoUrl(newPhotoUrl);
-                profileData.setNewPhotoUrl(newPhotoUrl);
-                mDbUserRefernce.getRef().child(pushID).child("oldURL").setValue(profileData.getOldPhotoUrl());
-                mDbUserRefernce.getRef().child(pushID).child("newURL").setValue(profileData.getNewPhotoUrl());
-                newUser = false;
+          //  if(newUser){
+                profileData.setOldUrl(newPhotoUrl);
+                profileData.setNewUrl(newPhotoUrl);
+             mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue( profileData.getOldUrl());
+             mDbUserRefernce.getRef().child(pushID).child("newurl").setValue( profileData.getNewUrl());
 
-            }
+
+              //  newUser = false;
+
+          /*  }
 
             else {
                 String oldphotoUrl = profileData.getNewPhotoUrl();
-                profileData.setOldPhotoUrl(oldphotoUrl);
-                profileData.setNewPhotoUrl(newPhotoUrl);
-                mDbUserRefernce.getRef().child(pushID).child("oldURL").setValue(profileData.getOldPhotoUrl());
-                mDbUserRefernce.getRef().child(pushID).child("newURL").setValue(profileData.getNewPhotoUrl());
+                profileData.setOldPhotoUrl(xyz);
+                profileData.setNewPhotoUrl(xyz);
+                mDbUserRefernce.getRef().child(pushID).child("old_photo_url").setValue(profileData.getOldPhotoUrl());
+                mDbUserRefernce.getRef().child(pushID).child("new_photo_url").setValue(profileData.getNewPhotoUrl());
 
-            }
+            }*/
 
-            ((HomeFragment)frag).setPhoto(profileData.getNewPhotoUrl());
         }
     });
 
@@ -373,7 +379,7 @@ public void uploadProfilePhoto(final Fragment frag, Intent data){
             }
         }
             else if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
-                uploadProfilePhoto(frag,data);
+                uploadProfilePhoto(data);
             }
 
     }

@@ -1,33 +1,23 @@
 package com.example.neha.appsdontlie_capstonestage2.data;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * Created by neha on 4/30/17.
  */
 
+@IgnoreExtraProperties
 public class MyProfileData {
     private String name;
     private String gender;
-    private String old_photo_url;
-    private String new_photo_url;
+    private String oldurl;
+    private String newurl;
     private String weight;
     private String height;
-    private String step_counts;
+    private String steps;
     private String calories;
 
     public MyProfileData(){}
-
-    public MyProfileData(String name,String gender,String old_photo_url,String new_photo_url,String weight,String height,String step_counts,String calories){
-
-        this.name = name;
-        this.gender = gender;
-        this.old_photo_url = old_photo_url;
-        this.new_photo_url = new_photo_url;
-        this.weight = weight;
-        this.height = height;
-        this.step_counts = step_counts;
-        this.calories = calories;
-
-    }
 
 
     public String getName(){
@@ -51,24 +41,24 @@ public class MyProfileData {
         this.gender = gender;
     }
 
-    public String getOldPhotoUrl(){
+    public String getOldUrl(){
 
-        return old_photo_url;
+        return oldurl;
     }
 
-    public void setOldPhotoUrl(String old_photo_url){
+    public void setOldUrl(String oldurl){
 
-        this.old_photo_url = old_photo_url;
+        this.oldurl = oldurl;
     }
 
-    public String getNewPhotoUrl(){
+    public String getNewUrl(){
 
-        return new_photo_url;
+        return newurl;
     }
 
-    public void setNewPhotoUrl(String new_photo_url){
+    public void setNewUrl(String newurl){
 
-        this.new_photo_url = new_photo_url;
+        this.newurl = newurl;
     }
 
     public String getWeight(){
@@ -93,12 +83,12 @@ public class MyProfileData {
 
     public String getSteps(){
 
-        return step_counts;
+        return steps;
     }
 
     public void setSteps(String step_counts){
 
-        this.step_counts = step_counts;
+        this.steps = step_counts;
     }
     public String getCalories(){
 

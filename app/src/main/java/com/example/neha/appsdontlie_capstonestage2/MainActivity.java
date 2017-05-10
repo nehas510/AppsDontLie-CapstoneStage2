@@ -34,6 +34,16 @@ public class MainActivity extends AppCompatActivity {
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
 
+        if(savedInstanceState == null)
+        {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content, new DashboardFragment())
+                        .commit();
+
+
+
+        }
+
 
 
     }
@@ -59,10 +69,10 @@ public void readData(MyProfileData data){
                     fragment = new DashboardFragment();
                     break;
                 case R.id.navigation_notifications:
-                    fragment = new MyProgressFragment();
+                    fragment = new MyProgressFragment(mPresenter,profileData);
                     break;
                 case R.id.navigation_settings:
-                    fragment = new MySettingsFragment(mPresenter);
+                    fragment = new MySettingsFragment(mPresenter,profileData);
                     break;
 
             }

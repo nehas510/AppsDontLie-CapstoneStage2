@@ -1,6 +1,7 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
@@ -32,8 +34,10 @@ public class MySettingsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private DataPresenter sPresenter;
+    private MyProfileData readData;
     private Button mSignOut, mSaveChanges;
     private EditText mWeight, mHeight, mGender;
+    private ImageButton mPhoto;
 
     //  private OnFragmentInteractionListener mListener;
 
@@ -41,7 +45,8 @@ public class MySettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public MySettingsFragment(DataPresenter presenter) {
+    public MySettingsFragment(DataPresenter presenter,MyProfileData readData) {
+        this.readData = readData;
 
         this.sPresenter = presenter;
         // Required empty public constructor
@@ -80,6 +85,7 @@ public class MySettingsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_my_settings, container, false);
         initViews(rootView);
 
+
         mSaveChanges.setOnClickListener(saveChanges);
 
         mSignOut.setOnClickListener(signOutButton);
@@ -108,6 +114,22 @@ public class MySettingsFragment extends Fragment {
     };
 
 
+    private View.OnClickListener addPicture  = new View.OnClickListener() {
+        public void onClick(View v) {
+
+
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        sPresenter.photoPicker(MySettingsFragment.this, intent);
+
+            if(readData.getOldUrl()!=null)
+                mPhoto.setClickable(false);
+
+
+        }
+
+    };
+
+
     private void initViews(View rootView) {
 
         mSignOut = (Button) rootView.findViewById(R.id.sign_out);
@@ -115,6 +137,8 @@ public class MySettingsFragment extends Fragment {
         mWeight = (EditText) rootView.findViewById(R.id.weight_fill);
         mHeight = (EditText) rootView.findViewById(R.id.height_fill);
         mGender = (EditText) rootView.findViewById(R.id.gender_fill);
+        mPhoto = (ImageButton) rootView.findViewById(R.id.imageViewPhoto);
+
 
 
     }
@@ -126,9 +150,17 @@ public class MySettingsFragment extends Fragment {
         weight = (mWeight.getText().toString());
         height = (mHeight.getText().toString());
         gender = (mGender.getText().toString());
+        mPhoto.setOnClickListener(addPicture);
 
         sPresenter.setData(weight, height, gender);
 
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        sPresenter.onActivityResult(MySettingsFragment.this,requestCode,resultCode,data);
 
     }
 

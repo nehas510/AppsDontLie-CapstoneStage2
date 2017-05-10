@@ -45,7 +45,8 @@ public class MyProgressFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public MyProgressFragment(DataPresenter presenter) {
+    public MyProgressFragment(DataPresenter presenter,MyProfileData readData) {
+        this.data = readData;
 
         pPresenter = presenter;
         // Required empty public constructor
@@ -85,7 +86,7 @@ public class MyProgressFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_my_progress, container, false);
       //  data = pPresenter.loadData();
         initViews(rootView);
-       // showdata(data);
+        showdata(data);
         return rootView;
     }
 
@@ -108,12 +109,12 @@ public class MyProgressFragment extends Fragment {
  private void showdata(MyProfileData data){
 
      Picasso.with(getContext())
-             .load(data.getNewPhotoUrl())
+             .load(data.getNewUrl())
              .fit()
              .into(mImageViewAfter);
 
      Picasso.with(getContext())
-             .load(data.getOldPhotoUrl())
+             .load(data.getOldUrl())
              .fit()
              .into(mImageViewBefore);
 

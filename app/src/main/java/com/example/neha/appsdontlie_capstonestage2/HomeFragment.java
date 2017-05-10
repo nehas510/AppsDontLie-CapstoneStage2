@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
@@ -38,7 +39,7 @@ public class HomeFragment extends Fragment {
     private TextView mWeight;
     private TextView mHeight;
     private TextView mGender;
-    private ImageButton mPhoto;
+    private ImageView mPhoto;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -120,13 +121,13 @@ public HomeFragment(){}
         mWeight =     (TextView) view.findViewById(R.id.weight_value);
         mHeight =     (TextView) view.findViewById(R.id.height_value);
         mGender =     (TextView) view.findViewById(R.id.gender_value);
-        mPhoto =      (ImageButton) view.findViewById(R.id.imageViewPhoto);
+        mPhoto =      (ImageView) view.findViewById(R.id.imageViewShow);
 
     }
 
     public void setPhoto(String url){
 
-        if(data.getNewPhotoUrl() != null){
+        if(data.getNewUrl() != null){
             Picasso.with(getContext())
                     .load(url)
                     .fit()
@@ -142,36 +143,15 @@ public HomeFragment(){}
         mStepCounts.setText(data.getSteps());
         mName.setText(data.getName());
         mCalories.setText(data.getCalories());
-
-       if(data.getNewPhotoUrl() == null) {
-           mPhoto.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   // TODO: Fire an intent to show an image picker
-
-                   Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                   hPresenter.photoPicker(HomeFragment.this, intent);
-                   mPhoto.setClickable(false);
-
-
-               }
-           });
-       }
-
-       else {
-           mPhoto.setClickable(false);
-           setPhoto(data.getNewPhotoUrl());
-       }
+        mWeight.setText(data.getWeight());
+        mHeight.setText(data.getHeight());
+        mGender.setText(data.getGender());
+        setPhoto(data.getNewUrl());
 
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        hPresenter.onActivityResult(HomeFragment.this,requestCode,resultCode,data);
 
-    }
 
 
 }
