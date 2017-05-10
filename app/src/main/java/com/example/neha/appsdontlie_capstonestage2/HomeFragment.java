@@ -127,15 +127,12 @@ public HomeFragment(){}
 
     private void setPhoto(String url){
 
-        if(data.getNewUrl() != null){
             Picasso.with(getContext())
                     .load(url)
+                    .placeholder(R.drawable.profile_pic)
                     .error(R.drawable.profile_pic)
                     .fit()
                     .into(mPhoto);
-    }
-
-
 
     }
 
