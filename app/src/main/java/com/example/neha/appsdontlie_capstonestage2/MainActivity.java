@@ -8,12 +8,19 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.MenuItem;
 
+import com.example.neha.appsdontlie_capstonestage2.adapter.MyProfileDataAdapter;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
@@ -21,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation;
     private DataPresenter mPresenter;
     private MyProfileData profileData;
+    private List<MyProfileData>  profileDataList =  new ArrayList<>();
 
 
     // TODO: Rename and change types of parameters
@@ -34,18 +42,23 @@ public class MainActivity extends AppCompatActivity {
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
 
-        if(savedInstanceState == null)
+    /*    if(savedInstanceState == null)
         {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content, new DashboardFragment())
+                        .replace(R.id.content, new HomeFragment(mPresenter,profileData))
                         .commit();
 
 
 
-        }
+        }*/
 
 
 
+    }
+
+    public void setListData(MyProfileData data){
+
+        profileDataList.add(data);
     }
 
 public void readData(MyProfileData data){
@@ -66,7 +79,7 @@ public void readData(MyProfileData data){
                     fragment = new HomeFragment(mPresenter,profileData);
                     break;
                 case R.id.navigation_dashboard:
-                    fragment = new DashboardFragment();
+                    fragment = new DashboardFragment(mPresenter,profileDataList);
                     break;
                 case R.id.navigation_notifications:
                     fragment = new MyProgressFragment(mPresenter,profileData);

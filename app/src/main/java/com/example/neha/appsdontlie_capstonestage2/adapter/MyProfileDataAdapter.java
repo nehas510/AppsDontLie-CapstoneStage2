@@ -13,7 +13,9 @@ import java.util.ArrayList;
  * Created by neha on 5/1/17.
  */
 
-public class MyProfileDataAdapter extends ArrayAdapter<MyProfileData> {
+public class MyProfileDataAdapter extends ArrayAdapter<MyProfileData>{
+
+
     public MyProfileDataAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
     }

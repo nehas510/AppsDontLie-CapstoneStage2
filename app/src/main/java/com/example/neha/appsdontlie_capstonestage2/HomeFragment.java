@@ -85,7 +85,7 @@ public HomeFragment(){}
         }
 
     }
-    
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

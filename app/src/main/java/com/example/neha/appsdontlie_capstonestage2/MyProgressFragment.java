@@ -86,6 +86,7 @@ public class MyProgressFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_my_progress, container, false);
       //  data = pPresenter.loadData();
         initViews(rootView);
+        pPresenter.showProgress();
         showdata(data);
         return rootView;
     }
@@ -108,6 +109,7 @@ public class MyProgressFragment extends Fragment {
 
  private void showdata(MyProfileData data){
 
+
      Picasso.with(getContext())
              .load(data.getNewUrl())
              .fit()
@@ -117,6 +119,7 @@ public class MyProgressFragment extends Fragment {
              .load(data.getOldUrl())
              .fit()
              .into(mImageViewBefore);
+     pPresenter.hideProgress();
 
 
 

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.neha.appsdontlie_capstonestage2.HomeFragment;
 import com.example.neha.appsdontlie_capstonestage2.MainActivity;
 import com.example.neha.appsdontlie_capstonestage2.R;
+import com.example.neha.appsdontlie_capstonestage2.SimpleProgressBar;
+import com.example.neha.appsdontlie_capstonestage2.adapter.MyProfileDataAdapter;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,11 +38,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -63,17 +67,20 @@ public class DataPresenter {
     private GoogleApiClient mClient;
     private FirebaseDatabase mFirebaseDb;
     private DatabaseReference  mDbUserRefernce;
-    private ValueEventListener mChildEventListener;
+    private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mStorageRefernce;
-   // private Fragment fragment;
+    protected SimpleProgressBar spb;
+
+    // private Fragment fragment;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
     private static final int RC_PHOTO_PICKER = 2;
     private boolean newUser = true;
     private static String pushID;
     private  String steps, calories, userKey;
+    private Query mQueryRef;
     private MyProfileData  readData, profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
@@ -81,6 +88,13 @@ public class DataPresenter {
 
     }
 
+
+    public interface MyPresenterCallback{
+
+        void onSuccess(MyProfileDataAdapter data);
+        void onFailure(DatabaseError error);
+
+    }
 
     public void initAuthListener(){
 
@@ -140,32 +154,69 @@ public class DataPresenter {
     }
 
 
+    public void showProgress(){
 
+        spb = SimpleProgressBar.show(activity);
+
+    }
+
+    public void hideProgress(){
+        if (spb != null) {
+            spb.dismiss();
+        }
+    }
 
     public void callChildListener() {
+
+        mQueryRef = mDbUserRefernce.orderByChild("steps");
+
         if (mChildEventListener == null) {
-            mChildEventListener = new ValueEventListener() {
+
+            mChildEventListener = new ChildEventListener() {
 
 
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                    readData = dataSnapshot.child(pushID).getValue(MyProfileData.class);
-                    ((MainActivity) activity).readData(readData);
+                    MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
 
+
+                    if(dataSnapshot.getKey().equals(pushID)) {
+                        MyProfileData readData = dataSnapshot.getValue(MyProfileData.class);
+                        ((MainActivity) activity).readData(readData);
+                    }
+
+                    ((MainActivity)activity).setListData(listOfData);
+
+                   // Iterable<DataSnapshot> listofData = dataSnapshot.getChildren();
+
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
-                }
+                }};
+
+            mQueryRef.addChildEventListener(mChildEventListener);
 
 
-            };
-            mDbUserRefernce.addValueEventListener(mChildEventListener);
-
-        }
+            }
     }
 
 
@@ -391,9 +442,10 @@ public void uploadProfilePhoto(Intent data){
 
       pushID = user.getUid();
       profileData.setName(user.getDisplayName());
-      mCreateFitnessClientforSteps();
 
+              mCreateFitnessClientforSteps();
       callChildListener();
+
   }
 
 

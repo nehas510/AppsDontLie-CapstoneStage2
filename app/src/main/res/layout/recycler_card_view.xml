@@ -23,10 +23,8 @@
 
         <TextView
             android:id="@+id/rank"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:paddingBottom="4dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -35,17 +33,15 @@
         <!--suppress AndroidLintContentDescription -->
         <ImageView
             android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             />
 
 
         <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
+            android:id="@+id/name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -54,10 +50,8 @@
 
         <TextView
             android:id="@+id/steps_count"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
