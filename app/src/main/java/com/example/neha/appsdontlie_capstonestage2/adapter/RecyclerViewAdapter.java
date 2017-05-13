@@ -1,7 +1,11 @@
 package com.example.neha.appsdontlie_capstonestage2.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.FloatRange;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +48,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+      //  Context mycontext = holder.imageViewPhoto.getContext();
 
          holder.showData(readData.get(position));
         holder.textViewRank.setText(String.valueOf(getItemCount()-position));
+
 
 
     }
@@ -81,11 +87,14 @@ class RecyclerViewHolder  extends RecyclerView.ViewHolder{
 
         textViewName.setText(data.getName());
         textViewSteps.setText(data.getSteps());
-
-       /* Picasso.with(fragment.getContext())
+        Picasso.with(fragment.getContext())
                 .load(data.getNewUrl())
+                .placeholder(R.drawable.profile_pic)
+                .error(R.drawable.profile_pic)
                 .fit()
-                .into(imageViewPhoto);*/
+                .into(imageViewPhoto);
+
+
     }
 
     private void initViews(View view){
@@ -94,6 +103,7 @@ class RecyclerViewHolder  extends RecyclerView.ViewHolder{
         textViewName = (TextView) view.findViewById(R.id.name_view);
         textViewRank = (TextView) view.findViewById(R.id.rank);
         textViewSteps = (TextView) view.findViewById(R.id.steps_count);
+        imageViewPhoto = (ImageView) view.findViewById(R.id.thumbnail);
 
     }
 }

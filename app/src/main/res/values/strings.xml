@@ -37,4 +37,5 @@
     <string name="sign_out">Sign Out</string>
     <string name="before">Before</string>
     <string name="after">After</string>
+    <string name="action_share">Share</string>
 </resources>

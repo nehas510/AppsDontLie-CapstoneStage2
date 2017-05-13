@@ -24,6 +24,12 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColor">@color/primary_text</item>
+        <item name="colorButtonNormal">@color/primary</item>
+        <item name="colorControlNormal">@color/primary</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent</item>
+        <item name="android:textColorPrimary">@color/authui_inputTextColor</item>
+
 
 
     </style>

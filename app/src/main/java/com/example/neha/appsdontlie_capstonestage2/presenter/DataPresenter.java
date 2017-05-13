@@ -81,7 +81,7 @@ public class DataPresenter {
     private static String pushID;
     private  String steps, calories, userKey;
     private Query mQueryRef;
-    private MyProfileData  readData, profileData = new MyProfileData();
+    private MyProfileData  profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
            activity = mView;
@@ -179,6 +179,7 @@ public class DataPresenter {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                     MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
+                    ((MainActivity)activity).setListData(listOfData);
 
 
                     if(dataSnapshot.getKey().equals(pushID)) {
@@ -186,7 +187,6 @@ public class DataPresenter {
                         ((MainActivity) activity).readData(readData);
                     }
 
-                    ((MainActivity)activity).setListData(listOfData);
 
                    // Iterable<DataSnapshot> listofData = dataSnapshot.getChildren();
 

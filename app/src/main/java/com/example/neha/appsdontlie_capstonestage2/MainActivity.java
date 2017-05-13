@@ -42,61 +42,58 @@ public class MainActivity extends AppCompatActivity {
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
 
-    /*    if(savedInstanceState == null)
-        {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content, new HomeFragment(mPresenter,profileData))
-                        .commit();
+    }
 
 
-
-        }*/
+  /*  private void setNavigationView(){
 
 
 
     }
-
-    public void setListData(MyProfileData data){
-
+*/
+    public void setListData(MyProfileData data) {
         profileDataList.add(data);
+       // setNavigationView();
+
     }
 
-public void readData(MyProfileData data){
+    public void readData(MyProfileData data){
+        this.profileData = data;
+        //setNavigationView();
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
-    this.profileData = data;
+        fragmentManager = getSupportFragmentManager();
 
-    navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
 
-    fragmentManager = getSupportFragmentManager();
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.navigation_home:
+                        fragment = new HomeFragment(mPresenter,profileData);
+                        break;
+                    case R.id.navigation_dashboard:
+                        fragment = new DashboardFragment(mPresenter,profileDataList);
+                        break;
+                    case R.id.navigation_notifications:
+                        fragment = new MyProgressFragment(mPresenter,profileData);
+                        break;
+                    case R.id.navigation_settings:
+                        fragment = new MySettingsFragment(mPresenter,profileData);
+                        break;
 
-    navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            int id = item.getItemId();
-            switch (id){
-                case R.id.navigation_home:
-                    fragment = new HomeFragment(mPresenter,profileData);
-                    break;
-                case R.id.navigation_dashboard:
-                    fragment = new DashboardFragment(mPresenter,profileDataList);
-                    break;
-                case R.id.navigation_notifications:
-                    fragment = new MyProgressFragment(mPresenter,profileData);
-                    break;
-                case R.id.navigation_settings:
-                    fragment = new MySettingsFragment(mPresenter,profileData);
-                    break;
-
+                }
+                final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content,fragment).commit();
+                return true;
             }
-            final FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.content,fragment).commit();
-            return true;
-        }
 
 
-    });
-}
+        });
+
+
+    }
 
     @Override
     protected void onResume(){

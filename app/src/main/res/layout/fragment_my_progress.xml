@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.neha.appsdontlie_capstonestage2.MyProgressFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -70,6 +71,19 @@
         android:layout_height="wrap_content"
         android:text="This is how you look now, feeling motivated???" />
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share_fab_progress"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:contentDescription="@string/action_share"
+        app:elevation="@dimen/fab_elevation"
+        android:src="@drawable/ic_share"
+        app:pressedTranslationZ="@dimen/fab_press_translation_z" />
+
 
 
 </FrameLayout>
