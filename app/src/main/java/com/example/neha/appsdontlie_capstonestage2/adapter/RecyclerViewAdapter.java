@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -95,6 +96,8 @@ class RecyclerViewHolder  extends RecyclerView.ViewHolder{
                 .into(imageViewPhoto);
 
 
+
+
     }
 
     private void initViews(View view){
@@ -105,7 +108,11 @@ class RecyclerViewHolder  extends RecyclerView.ViewHolder{
         textViewSteps = (TextView) view.findViewById(R.id.steps_count);
         imageViewPhoto = (ImageView) view.findViewById(R.id.thumbnail);
 
+
+
+
     }
+
 }
 
 

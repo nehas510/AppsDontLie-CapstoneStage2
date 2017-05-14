@@ -1,19 +1,29 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -104,9 +114,37 @@ public class MyProgressFragment extends Fragment {
      mBefore = (TextView) view.findViewById(R.id.textBefore);
      mImageViewAfter = (ImageView) view.findViewById(R.id.imageViewAfter);
      mImageViewBefore = (ImageView) view.findViewById(R.id.imageViewBefore);
+
+     view.findViewById(R.id.share_fab_progress).setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+           //  Bitmap bitMap = overlay(data.getNewUrl(),data.getOldUrl());
+             Snackbar snackbar = Snackbar
+                     .make(view, "Share with your friends", Snackbar.LENGTH_LONG);
+             snackbar.show();
+             startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                     .setType("image/jpeg")
+                     .getIntent(), getString(R.string.action_share)));
+         }
+     });
  }
 
+  /*  public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private static Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
+        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(bmp1, new Matrix(), null);
+        canvas.drawBitmap(bmp2, 0, 0, null);
+        return bmOverlay;
+    }
+*/
  private void showdata(MyProfileData data){
 
 

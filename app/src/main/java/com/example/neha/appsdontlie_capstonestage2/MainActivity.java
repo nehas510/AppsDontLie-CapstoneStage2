@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new HomeFragment(mPresenter,profileData);
                         break;
                     case R.id.navigation_dashboard:
-                        fragment = new DashboardFragment(mPresenter,profileDataList);
+                        fragment = new DashboardFragment(mPresenter,profileData,profileDataList);
                         break;
                     case R.id.navigation_notifications:
                         fragment = new MyProgressFragment(mPresenter,profileData);
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onPause();
         mPresenter.onPauseEvent();
+        profileDataList.clear();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

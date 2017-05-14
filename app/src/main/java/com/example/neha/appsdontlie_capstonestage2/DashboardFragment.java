@@ -33,7 +33,7 @@ public class DashboardFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+private View rootView;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -43,14 +43,16 @@ public class DashboardFragment extends Fragment {
 
     private DataPresenter dPresenter;
    private List<MyProfileData> readData;
+    private MyProfileData profileData;
 
 
    // private OnFragmentInteractionListener mListener;
 
-    public DashboardFragment(DataPresenter presenter,List<MyProfileData> readData) {
+    public DashboardFragment(DataPresenter presenter,MyProfileData profileData,List<MyProfileData> readData) {
 
         this.dPresenter = presenter;
         this.readData = readData;
+        this.profileData = profileData;
     }
 
 
@@ -86,7 +88,7 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView;
+      //  View rootView;
         rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         updateRecyclerView(rootView);
 
@@ -112,7 +114,21 @@ public class DashboardFragment extends Fragment {
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
+
+        view.findViewById(R.id.share_fab_rank).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar snackbar = Snackbar
+                        .make(view, "Share with your friends", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                        .setType("text/plain")
+                        .setText("I took "+ profileData.getSteps() + " today " +"\n-From Apps Dont Lie")
+                        .getIntent(), getString(R.string.action_share)));
+            }
+        });
     }
+
 
 
 

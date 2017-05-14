@@ -134,6 +134,9 @@ public class DataPresenter {
     }
 
     public void onPauseEvent(){
+
+
+        detachDatabaseReadListener();
         if (mAuthListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
@@ -188,7 +191,6 @@ public class DataPresenter {
                     }
 
 
-                   // Iterable<DataSnapshot> listofData = dataSnapshot.getChildren();
 
 
                 }
