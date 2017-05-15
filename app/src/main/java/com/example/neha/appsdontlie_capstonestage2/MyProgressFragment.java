@@ -103,6 +103,7 @@ public class MyProgressFragment extends Fragment {
                 mAfter.setText("After");
                 Picasso.with(getContext())
                         .load(data.getNewUrl())
+                        .fit()
                         .into(mImageViewAfter);
 
                 mImageViewAfter.setOnLongClickListener(new View.OnLongClickListener() {
@@ -127,6 +128,7 @@ public class MyProgressFragment extends Fragment {
                                 mAfter.setText("After");
                                 Picasso.with(getContext())
                                         .load(data.getNewUrl())
+                                        .fit()
                                         .into(mImageViewAfter);
                                 isButtonLongPressed = false;
                             }
