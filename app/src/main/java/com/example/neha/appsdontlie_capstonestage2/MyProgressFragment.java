@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -47,6 +48,7 @@ public class MyProgressFragment extends Fragment {
     private String mParam2;
     private TextView mBefore;
     private TextView mAfter;
+    private boolean isButtonLongPressed = false;
   //  private DataPresenter pPresenter;
     private ImageButton mImageViewBefore , mImageViewAfter;
    // private MyProfileData data;
@@ -98,6 +100,7 @@ public class MyProgressFragment extends Fragment {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mImageViewAfter.setTransitionName(transitionName);
+                mAfter.setText("After");
                 Picasso.with(getContext())
                         .load(data.getNewUrl())
                         .into(mImageViewAfter);
@@ -105,11 +108,33 @@ public class MyProgressFragment extends Fragment {
                 mImageViewAfter.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-
+                         isButtonLongPressed = true;
                         showdata(data);
                         return true;
                     }
                 });
+
+
+                mImageViewAfter.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.onTouchEvent(event);
+                        // We're only interested in when the button is released.
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            // We're only interested in anything if our speak button is currently pressed.
+                            if (isButtonLongPressed) {
+                                // Do something when the button is released.
+                                mAfter.setText("After");
+                                Picasso.with(getContext())
+                                        .load(data.getNewUrl())
+                                        .into(mImageViewAfter);
+                                isButtonLongPressed = false;
+                            }
+                        }
+                        return false;
+                    }
+                });
+
             }
 
 
