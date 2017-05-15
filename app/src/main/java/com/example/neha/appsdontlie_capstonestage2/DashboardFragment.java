@@ -40,6 +40,7 @@ private View rootView;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter mAdapter;
     private  LinearLayoutManager layoutManager;
+    private Context context;
 
     private DataPresenter dPresenter;
    private List<MyProfileData> readData;
@@ -89,6 +90,7 @@ private View rootView;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
       //  View rootView;
+        context = getActivity();
         rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         updateRecyclerView(rootView);
 
@@ -130,6 +132,20 @@ private View rootView;
     }
 
 
+
+    public void openMovieDetailFragment(int position, View view) {
+
+        if (context instanceof MainActivity) {
+            MyProfileData data = readData.get(position);
+            MyProgressFragment movieDetail = new MyProgressFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("transitionName", "transition" + position);
+            bundle.putSerializable("movie", data);
+
+            movieDetail.setArguments(bundle);
+            ((MainActivity)context).showFragmentWithTransition(this, movieDetail, "movieDetail", view, "transition" + position);
+        }
+    }
 
 
     /**

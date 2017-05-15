@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
@@ -45,20 +47,13 @@ public class MyProgressFragment extends Fragment {
     private String mParam2;
     private TextView mBefore;
     private TextView mAfter;
-    private DataPresenter pPresenter;
-    private ImageView mImageViewBefore , mImageViewAfter;
-    private MyProfileData data;
+  //  private DataPresenter pPresenter;
+    private ImageButton mImageViewBefore , mImageViewAfter;
+   // private MyProfileData data;
 
     private OnFragmentInteractionListener mListener;
 
     public MyProgressFragment() {
-        // Required empty public constructor
-    }
-
-    public MyProgressFragment(DataPresenter presenter,MyProfileData readData) {
-        this.data = readData;
-
-        pPresenter = presenter;
         // Required empty public constructor
     }
 
@@ -96,8 +91,33 @@ public class MyProgressFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_my_progress, container, false);
       //  data = pPresenter.loadData();
         initViews(rootView);
-        pPresenter.showProgress();
-        showdata(data);
+        Bundle b = getArguments();
+        if (b != null) {
+            String transitionName = b.getString("transitionName");
+            final MyProfileData data = (MyProfileData) b.getSerializable("movie");
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mImageViewAfter.setTransitionName(transitionName);
+                Picasso.with(getContext())
+                        .load(data.getNewUrl())
+                        .into(mImageViewAfter);
+
+                mImageViewAfter.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        showdata(data);
+                        return true;
+                    }
+                });
+            }
+
+
+
+
+            //  pPresenter.showProgress();
+          //  showdata(data);
+        }
         return rootView;
     }
 
@@ -111,9 +131,12 @@ public class MyProgressFragment extends Fragment {
  private void initViews(View view){
 
      mAfter = (TextView) view.findViewById(R.id.textAfter);
-     mBefore = (TextView) view.findViewById(R.id.textBefore);
-     mImageViewAfter = (ImageView) view.findViewById(R.id.imageViewAfter);
-     mImageViewBefore = (ImageView) view.findViewById(R.id.imageViewBefore);
+    // mBefore = (TextView) view.findViewById(R.id.textBefore);
+     mImageViewAfter = (ImageButton) view.findViewById(R.id.thumbnail);
+    // mImageViewBefore = (ImageView) view.findViewById(R.id.imageViewBefore);
+
+
+
 
      view.findViewById(R.id.share_fab_progress).setOnClickListener(new View.OnClickListener() {
          @Override
@@ -129,36 +152,14 @@ public class MyProgressFragment extends Fragment {
      });
  }
 
-  /*  public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    private static Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
-        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
-        Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawBitmap(bmp1, new Matrix(), null);
-        canvas.drawBitmap(bmp2, 0, 0, null);
-        return bmOverlay;
-    }
-*/
  private void showdata(MyProfileData data){
 
-
-     Picasso.with(getContext())
-             .load(data.getNewUrl())
-             .fit()
-             .into(mImageViewAfter);
+     mAfter.setText("Before");
 
      Picasso.with(getContext())
              .load(data.getOldUrl())
              .fit()
-             .into(mImageViewBefore);
-     pPresenter.hideProgress();
-
+             .into(mImageViewAfter);
 
 
  }

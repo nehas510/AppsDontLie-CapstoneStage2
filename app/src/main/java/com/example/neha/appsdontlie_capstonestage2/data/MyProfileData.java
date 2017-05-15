@@ -2,12 +2,14 @@ package com.example.neha.appsdontlie_capstonestage2.data;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by neha on 4/30/17.
  */
 
 @IgnoreExtraProperties
-public class MyProfileData {
+public class MyProfileData implements Serializable {
     private String name;
     private String gender;
     private String oldurl;

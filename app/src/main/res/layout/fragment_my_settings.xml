@@ -12,7 +12,7 @@
 
 
         <ImageButton
-            android:id="@+id/imageViewPhoto"
+            android:id="@+id/imageViewPic"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@android:drawable/ic_menu_gallery"

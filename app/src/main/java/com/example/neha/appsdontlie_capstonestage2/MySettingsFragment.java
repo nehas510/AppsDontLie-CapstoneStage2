@@ -148,7 +148,7 @@ public class MySettingsFragment extends Fragment {
         mWeight = (EditText) rootView.findViewById(R.id.weight_fill);
         mHeight = (EditText) rootView.findViewById(R.id.height_fill);
         mGender = (EditText) rootView.findViewById(R.id.gender_fill);
-        mPhoto = (ImageButton) rootView.findViewById(R.id.imageViewPhoto);
+        mPhoto = (ImageButton) rootView.findViewById(R.id.imageViewPic);
 
 
 

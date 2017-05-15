@@ -2,6 +2,7 @@ package com.example.neha.appsdontlie_capstonestage2;
 
 import android.content.Intent;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,7 +12,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import android.transition.TransitionInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.neha.appsdontlie_capstonestage2.adapter.MyProfileDataAdapter;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
@@ -76,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_dashboard:
                         fragment = new DashboardFragment(mPresenter,profileData,profileDataList);
                         break;
-                    case R.id.navigation_notifications:
-                        fragment = new MyProgressFragment(mPresenter,profileData);
-                        break;
                     case R.id.navigation_settings:
                         fragment = new MySettingsFragment(mPresenter,profileData);
                         break;
@@ -94,6 +94,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public void showFragmentWithTransition(Fragment current, Fragment newFragment, String tag, View sharedView, String sharedElementName) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // check if the fragment is in back stack
+        boolean fragmentPopped = fragmentManager.popBackStackImmediate(tag, 0);
+        if (fragmentPopped) {
+            // fragment is pop from backStack
+        } else {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                current.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(R.transition.default_transition));
+                current.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.no_transition));
+
+                newFragment.setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.default_transition));
+                newFragment.setEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.no_transition));
+            }
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content, newFragment, tag);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.addSharedElement(sharedView, sharedElementName);
+            fragmentTransaction.commit();
+        }
+    }
+
 
     @Override
     protected void onResume(){

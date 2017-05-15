@@ -17,12 +17,6 @@
         android:title="@string/title_dashboard" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        app:showAsAction="ifRoom"
-        android:enabled="true"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_my_progress" />
-    <item
         android:id="@+id/navigation_settings"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_manage"
