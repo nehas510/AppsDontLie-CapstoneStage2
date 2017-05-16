@@ -18,6 +18,7 @@ public class MyProfileData implements Serializable {
     private String height;
     private String steps;
     private String calories;
+    private String userID;
 
     public MyProfileData(){}
 
@@ -103,8 +104,14 @@ public class MyProfileData implements Serializable {
     }
 
 
+    public void setUserID(String userID){
 
+        this.userID = userID;
+    }
 
+     public String getUserID(){
 
+         return this.userID;
+     }
 
 }

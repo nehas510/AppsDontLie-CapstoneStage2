@@ -77,8 +77,8 @@ public class DataPresenter {
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
     private static final int RC_PHOTO_PICKER = 2;
-    private boolean newUser = true;
-    private static String pushID;
+    private static boolean newUser = true;
+    public static  String pushID;
     private  String steps, calories, userKey;
     private Query mQueryRef;
     private MyProfileData  profileData = new MyProfileData();
@@ -148,6 +148,7 @@ public class DataPresenter {
 
         mFirebaseDb = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseDb.setPersistenceEnabled(true);
         mFirebaseStorage = FirebaseStorage.getInstance("gs://capstone-project-20ec5.appspot.com/");
         mDbUserRefernce = mFirebaseDb.getReference().child("Users");
         mStorageRefernce = mFirebaseStorage.getReference().child("photos");
@@ -183,15 +184,6 @@ public class DataPresenter {
 
                     MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
                     ((MainActivity)activity).setListData(listOfData);
-
-
-                    if(dataSnapshot.getKey().equals(pushID)) {
-                        MyProfileData readData = dataSnapshot.getValue(MyProfileData.class);
-                        ((MainActivity) activity).readData(readData);
-                    }
-
-
-
 
                 }
 
@@ -306,8 +298,6 @@ public class DataPresenter {
             super.onPostExecute(aLong);
             profileData.setSteps(aLong.toString());
             new FetchCalorieAsync().execute();
-          //  mDbUserRefernce.getRef().child(pushID).child("steps").setValue(profileData.getSteps());
-            //Total steps covered for that day
             Log.i(TAG, "Total steps: " + aLong);
         }
     }
@@ -337,6 +327,7 @@ public class DataPresenter {
             super.onPostExecute(aLong);
             profileData.setCalories(aLong.toString());
             mDbUserRefernce.getRef().child(pushID).child("name").setValue(profileData.getName());
+            mDbUserRefernce.getRef().child(pushID).child("userID").setValue(profileData.getUserID());
             mDbUserRefernce.getRef().child(pushID).child("steps").setValue(profileData.getSteps());
             mDbUserRefernce.getRef().child(pushID).child("calories").setValue(profileData.getCalories());
             //Total calories burned for that day
@@ -382,27 +373,24 @@ public void uploadProfilePhoto(Intent data){
             Uri downloadUrl = taskSnapshot.getDownloadUrl();
             Toast.makeText(activity,"uploaded the data to " + downloadUrl,Toast.LENGTH_SHORT).show();
             String newPhotoUrl = downloadUrl.toString();
-           // String xyz = "xyz";
 
-          //  if(newUser){
+            if(newUser && profileData.getNewUrl()==null){
                 profileData.setOldUrl(newPhotoUrl);
                 profileData.setNewUrl(newPhotoUrl);
-             mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue( profileData.getOldUrl());
-             mDbUserRefernce.getRef().child(pushID).child("newurl").setValue( profileData.getNewUrl());
+                mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue( profileData.getOldUrl());
+                mDbUserRefernce.getRef().child(pushID).child("newurl").setValue( profileData.getNewUrl());
+                newUser = false;
 
-
-              //  newUser = false;
-
-          /*  }
+            }
 
             else {
-                String oldphotoUrl = profileData.getNewPhotoUrl();
-                profileData.setOldPhotoUrl(xyz);
-                profileData.setNewPhotoUrl(xyz);
-                mDbUserRefernce.getRef().child(pushID).child("old_photo_url").setValue(profileData.getOldPhotoUrl());
-                mDbUserRefernce.getRef().child(pushID).child("new_photo_url").setValue(profileData.getNewPhotoUrl());
+                String oldphotoUrl = profileData.getNewUrl();
+                profileData.setOldUrl(oldphotoUrl);
+                profileData.setNewUrl(newPhotoUrl);
+                mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue(profileData.getOldUrl());
+                mDbUserRefernce.getRef().child(pushID).child("newurl").setValue(profileData.getNewUrl());
 
-            }*/
+            }
 
         }
     });
@@ -444,8 +432,9 @@ public void uploadProfilePhoto(Intent data){
 
       pushID = user.getUid();
       profileData.setName(user.getDisplayName());
+      profileData.setUserID(user.getUid());
 
-              mCreateFitnessClientforSteps();
+      mCreateFitnessClientforSteps();
       callChildListener();
 
   }

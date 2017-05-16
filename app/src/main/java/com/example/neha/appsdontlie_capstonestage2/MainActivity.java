@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
 
+
     }
 
 
@@ -56,13 +57,11 @@ public class MainActivity extends AppCompatActivity {
 */
     public void setListData(MyProfileData data) {
         profileDataList.add(data);
-       // setNavigationView();
 
-    }
+        if (data.getUserID().equals(mPresenter.pushID)) {
+            this.profileData = data;
+        }
 
-    public void readData(MyProfileData data){
-        this.profileData = data;
-        //setNavigationView();
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         fragmentManager = getSupportFragmentManager();
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     public void showFragmentWithTransition(Fragment current, Fragment newFragment, String tag, View sharedView, String sharedElementName) {
         FragmentManager fragmentManager = getSupportFragmentManager();

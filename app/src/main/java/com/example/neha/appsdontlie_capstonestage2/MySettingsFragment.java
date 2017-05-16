@@ -90,7 +90,7 @@ public class MySettingsFragment extends Fragment {
             showData();
 
 
-
+        mPhoto.setOnClickListener(addPicture);
 
         mSaveChanges.setOnClickListener(saveChanges);
 
@@ -160,8 +160,8 @@ public class MySettingsFragment extends Fragment {
         mHeight.setText(readData.getHeight());
         mGender.setText(readData.getGender());
         setPhoto(readData.getNewUrl());
-        mPhoto.setClickable(false);
-        mSaveChanges.setClickable(false);
+       // mPhoto.setClickable(false);
+        //mSaveChanges.setClickable(false);
 
 
     }
@@ -172,7 +172,6 @@ public class MySettingsFragment extends Fragment {
         weight = (mWeight.getText().toString());
         height = (mHeight.getText().toString());
         gender = (mGender.getText().toString());
-        mPhoto.setOnClickListener(addPicture);
 
         sPresenter.setData(weight, height, gender);
 

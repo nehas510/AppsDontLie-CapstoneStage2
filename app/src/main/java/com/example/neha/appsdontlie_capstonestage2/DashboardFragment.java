@@ -98,16 +98,8 @@ private View rootView;
         return rootView;
     }
 
-  /*  // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-*/
 
     public void updateRecyclerView(View view) {
-
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mAdapter = new RecyclerViewAdapter(this,readData);
