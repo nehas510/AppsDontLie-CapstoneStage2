@@ -9,17 +9,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.neha.appsdontlie_capstonestage2.adapter.MyProfileDataAdapter;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -54,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                               getSupportFragmentManager().beginTransaction().
                              replace(R.id.content,new HomeFragment(mPresenter,data)).commit();
                              profileData = data;
+                    setViews();
 
                 }
 
@@ -70,12 +68,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setListData(MyProfileData data) {
+  /*  public void setListData(MyProfileData data) {
         profileDataList.add(data);
 
         setViews();
     }
-
+*/
  private void setViews(){
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new HomeFragment(mPresenter,profileData);
                         break;
                     case R.id.navigation_dashboard:
-                        fragment = new DashboardFragment(mPresenter,profileData,profileDataList);
+                        fragment = new DashboardFragment(mPresenter);
                         break;
                     case R.id.navigation_settings:
                         fragment = new MySettingsFragment(mPresenter,profileData);

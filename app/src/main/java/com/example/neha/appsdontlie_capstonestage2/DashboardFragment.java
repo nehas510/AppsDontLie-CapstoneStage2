@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.neha.appsdontlie_capstonestage2.adapter.RecyclerViewAdapter;
+import com.example.neha.appsdontlie_capstonestage2.adapter.DashBoardRecyclerAdapter;
+import com.example.neha.appsdontlie_capstonestage2.adapter.RecyclerViewHolder;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.Iterator;
@@ -38,7 +40,7 @@ private View rootView;
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter mAdapter;
+    private FirebaseRecyclerAdapter mAdapter;
     private  LinearLayoutManager layoutManager;
     private Context context;
 
@@ -49,11 +51,10 @@ private View rootView;
 
    // private OnFragmentInteractionListener mListener;
 
-    public DashboardFragment(DataPresenter presenter,MyProfileData profileData,List<MyProfileData> readData) {
+    public DashboardFragment(DataPresenter presenter) {
 
         this.dPresenter = presenter;
-        this.readData = readData;
-        this.profileData = profileData;
+
     }
 
 
@@ -102,8 +103,8 @@ private View rootView;
     public void updateRecyclerView(View view) {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mAdapter = new RecyclerViewAdapter(this,readData);
         layoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new DashBoardRecyclerAdapter(this,MyProfileData.class,R.layout.recycler_card_view, RecyclerViewHolder.class,(dPresenter.getmQueryRef()));
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -125,10 +126,10 @@ private View rootView;
 
 
 
-    public void openMovieDetailFragment(int position, View view) {
+    public void openProgressFragment(int position, View view) {
 
         if (context instanceof MainActivity) {
-            MyProfileData data = readData.get(position);
+          //  MyProfileData data = readData.get(position);
             MyProgressFragment movieDetail = new MyProgressFragment();
             Bundle bundle = new Bundle();
             bundle.putString("transitionName", "transition" + position);

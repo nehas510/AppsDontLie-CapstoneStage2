@@ -11,11 +11,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.neha.appsdontlie_capstonestage2.HomeFragment;
-import com.example.neha.appsdontlie_capstonestage2.MainActivity;
 import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.SimpleProgressBar;
-import com.example.neha.appsdontlie_capstonestage2.adapter.MyProfileDataAdapter;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
@@ -39,20 +36,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
-import static android.content.Context.TELEPHONY_SERVICE;
 
 /**
  * Created by neha on 5/3/17.
@@ -184,7 +177,7 @@ public class DataPresenter {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                     MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
-                           ((MainActivity)activity).setListData(listOfData);
+                         //  ((MainActivity)activity).setListData(listOfData);
 
                     if(callback!=null){
 
@@ -230,6 +223,56 @@ public class DataPresenter {
     }
 
 
+    public Query getmQueryRef(){
+
+        return  this.mDbUserRefernce.orderByChild("steps");
+    }
+
+
+  /*  public void callChildListener() {
+
+       mQueryRef =  mDbUserRefernce.orderByChild("steps");
+
+        if (mChildEventListener == null) {
+
+            mChildEventListener = new ChildEventListener() {
+
+
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
+
+                    //((MainActivity)activity).setListData(listOfData);
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }};
+
+            mQueryRef.addChildEventListener(mChildEventListener);
+
+
+        }
+    }
+*/
 
     public void mCreateFitnessClientforSteps() {
 
