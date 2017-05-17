@@ -201,9 +201,6 @@ public class DataPresenter {
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
-                    ((MainActivity)activity).setListData(listOfData);
-
                 }
 
                 @Override
