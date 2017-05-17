@@ -46,6 +46,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -91,7 +92,7 @@ public class DataPresenter {
 
     public interface MyPresenterCallback{
 
-        void onSuccess(MyProfileDataAdapter data);
+        void onSuccess(MyProfileData data);
         void onFailure(DatabaseError error);
 
     }
@@ -170,7 +171,7 @@ public class DataPresenter {
         }
     }
 
-    public void callChildListener() {
+    public void callChildListener(final MyPresenterCallback callback) {
 
         mQueryRef = mDbUserRefernce.orderByChild("steps");
 
@@ -183,12 +184,25 @@ public class DataPresenter {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                     MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
-                    ((MainActivity)activity).setListData(listOfData);
+                           ((MainActivity)activity).setListData(listOfData);
+
+                    if(callback!=null){
+
+                               if(dataSnapshot.getKey().equals(pushID)) {
+
+                                   callback.onSuccess(listOfData);
+                               }
+
+
+                    }
 
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
+                    ((MainActivity)activity).setListData(listOfData);
 
                 }
 
@@ -205,6 +219,11 @@ public class DataPresenter {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
+                    if(callback!=null){
+
+                        callback.onFailure(databaseError);
+                    }
+
                 }};
 
             mQueryRef.addChildEventListener(mChildEventListener);
@@ -212,6 +231,7 @@ public class DataPresenter {
 
             }
     }
+
 
 
     public void mCreateFitnessClientforSteps() {
@@ -435,7 +455,7 @@ public void uploadProfilePhoto(Intent data){
       profileData.setUserID(user.getUid());
 
       mCreateFitnessClientforSteps();
-      callChildListener();
+     // callChildListener();
 
   }
 

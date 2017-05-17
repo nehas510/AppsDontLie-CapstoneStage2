@@ -105,16 +105,12 @@ public class MySettingsFragment extends Fragment {
         public void onClick(View v) {
             pushData();
             Toast.makeText(getContext(), "Changes saved", Toast.LENGTH_SHORT).show();
-
-
         }
     };
 
     private View.OnClickListener signOutButton = new View.OnClickListener() {
         public void onClick(View v) {
-
             FirebaseAuth.getInstance().signOut();
-
         }
 
     };
@@ -122,12 +118,8 @@ public class MySettingsFragment extends Fragment {
 
     private View.OnClickListener addPicture  = new View.OnClickListener() {
         public void onClick(View v) {
-
-
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                         sPresenter.photoPicker(MySettingsFragment.this, intent);
-
-
 
         }
 
@@ -150,8 +142,6 @@ public class MySettingsFragment extends Fragment {
         mGender = (EditText) rootView.findViewById(R.id.gender_fill);
         mPhoto = (ImageButton) rootView.findViewById(R.id.imageViewPic);
 
-
-
     }
 
     private void showData(){
@@ -159,9 +149,10 @@ public class MySettingsFragment extends Fragment {
         mWeight.setText(readData.getWeight());
         mHeight.setText(readData.getHeight());
         mGender.setText(readData.getGender());
+
+        if(readData.getNewUrl()!=null)
         setPhoto(readData.getNewUrl());
-       // mPhoto.setClickable(false);
-        //mSaveChanges.setClickable(false);
+
 
 
     }

@@ -26,6 +26,7 @@ public class SplashScreenActivity  extends AppCompatActivity {
         getWindow().setBackgroundDrawableResource(R.color.primary);
 
 
+
         setContentView(R.layout.activity_splash_screen);
 
         text1 = (TextView) findViewById(android.R.id.text1);

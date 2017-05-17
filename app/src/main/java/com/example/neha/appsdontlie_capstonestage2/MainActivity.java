@@ -20,6 +20,7 @@ import com.example.neha.appsdontlie_capstonestage2.adapter.MyProfileDataAdapter;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,29 +40,43 @@ public class MainActivity extends AppCompatActivity {
     private String mParam2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
+        mPresenter.callChildListener(new DataPresenter.MyPresenterCallback() {
+            @Override
+            public void onSuccess(MyProfileData data) {
 
+                if(savedInstanceState == null){
+
+                              getSupportFragmentManager().beginTransaction().
+                             replace(R.id.content,new HomeFragment(mPresenter,data)).commit();
+                             profileData = data;
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(DatabaseError error) {
+
+
+
+            }
+        });
 
     }
 
-
-  /*  private void setNavigationView(){
-
-
-
-    }
-*/
     public void setListData(MyProfileData data) {
         profileDataList.add(data);
 
-        if (data.getUserID().equals(mPresenter.pushID)) {
-            this.profileData = data;
-        }
+        setViews();
+    }
 
+ private void setViews(){
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         fragmentManager = getSupportFragmentManager();

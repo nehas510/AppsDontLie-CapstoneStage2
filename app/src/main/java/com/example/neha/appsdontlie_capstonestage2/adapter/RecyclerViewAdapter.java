@@ -55,9 +55,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder,final int position) {
-      //  Context mycontext = holder.imageViewPhoto.getContext();
 
-       //  holder.showData(readData.get(position));
         holder.textViewRank.setText(String.valueOf(getItemCount()-position));
         holder.shareDataInTransition(readData.get(position),position);
 
