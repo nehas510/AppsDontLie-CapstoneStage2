@@ -126,7 +126,7 @@ private View rootView;
 
 
 
-    public void openProgressFragment(int position, View view) {
+    public void openProgressFragment(MyProfileData data,int position, View view) {
 
         if (context instanceof MainActivity) {
           //  MyProfileData data = readData.get(position);

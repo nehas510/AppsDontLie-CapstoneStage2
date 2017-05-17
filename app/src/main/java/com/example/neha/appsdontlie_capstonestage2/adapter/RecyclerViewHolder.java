@@ -23,6 +23,7 @@ public class RecyclerViewHolder  extends RecyclerView.ViewHolder{
      TextView textViewName;
      TextView textViewSteps;
      Fragment fragment;
+     MyProfileData readData;
      int pos = -1;
 
     public RecyclerViewHolder(View itemView) {
@@ -32,7 +33,7 @@ public class RecyclerViewHolder  extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DashboardFragment)fragment).openProgressFragment(getAdapterPosition(), v.findViewById(R.id.thumbnail));
+                ((DashboardFragment)fragment).openProgressFragment(readData,getAdapterPosition(), v.findViewById(R.id.thumbnail));
 
 
             }
@@ -45,6 +46,7 @@ public class RecyclerViewHolder  extends RecyclerView.ViewHolder{
     public void shareDataInTransition(Fragment fragment,final MyProfileData readData, final int position){
         pos = position;
         this.fragment = fragment;
+        this.readData = readData;
 
         Target target = new Target() {
             @Override
