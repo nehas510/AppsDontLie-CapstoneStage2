@@ -48,17 +48,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(MyProfileData data) {
 
-                isTab = true;
+                if(findViewById(R.id.list_container)!=null) {
 
-                if (savedInstanceState == null) {
-                    mPresenter.hideProgress();
+                    isTab = true;
 
-                    getSupportFragmentManager().beginTransaction().
-                            replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+                    if (savedInstanceState == null) {
+                        mPresenter.hideProgress();
 
-                    getSupportFragmentManager().beginTransaction().
-                            replace(R.id.list_container, new DashboardFragment(mPresenter)).commit();
-                } else {
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.list_container, new DashboardFragment(mPresenter)).commit();
+                    }
+                }
+                else {
                     if (savedInstanceState == null) {
                         mPresenter.hideProgress();
 
@@ -133,7 +137,11 @@ public class MainActivity extends AppCompatActivity {
                 newFragment.setEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.no_transition));
             }
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.list_container, newFragment, tag);
+            if(isTab) {
+                fragmentTransaction.replace(R.id.list_container, newFragment, tag);
+            }
+            else
+            { fragmentTransaction.replace(R.id.content, newFragment, tag);}
             fragmentTransaction.addToBackStack(tag);
             fragmentTransaction.addSharedElement(sharedView, sharedElementName);
             fragmentTransaction.commit();
