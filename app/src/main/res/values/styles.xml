@@ -9,7 +9,6 @@
     </style>
 
 
-
     <style name="MyNewTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
@@ -31,6 +30,14 @@
         <item name="android:textColorPrimary">@color/authui_inputTextColor</item>
 
 
-
     </style>
+
+    <style name="MyNewTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyNewTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="MyNewTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

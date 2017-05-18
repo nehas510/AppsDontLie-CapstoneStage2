@@ -66,8 +66,6 @@ public class DataPresenter {
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mStorageRefernce;
     protected SimpleProgressBar spb;
-
-    // private Fragment fragment;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
     private static final int RC_PHOTO_PICKER = 2;
@@ -87,7 +85,6 @@ public class DataPresenter {
 
         void onSuccess(MyProfileData data);
         void onFailure(DatabaseError error);
-
     }
 
     public void initAuthListener(){
@@ -177,7 +174,6 @@ public class DataPresenter {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                     MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
-                         //  ((MainActivity)activity).setListData(listOfData);
 
                     if(callback!=null){
 
@@ -185,7 +181,6 @@ public class DataPresenter {
 
                                    callback.onSuccess(listOfData);
                                }
-
 
                     }
 
@@ -390,7 +385,6 @@ public class DataPresenter {
             mDbUserRefernce.getRef().child(pushID).child("userID").setValue(profileData.getUserID());
             mDbUserRefernce.getRef().child(pushID).child("steps").setValue(profileData.getSteps());
             mDbUserRefernce.getRef().child(pushID).child("calories").setValue(profileData.getCalories());
-            //Total calories burned for that day
             Log.i(TAG, "Total calories: " + aLong);
 
         }
@@ -414,12 +408,7 @@ public void uploadProfilePhoto(Intent data){
 
     Uri selectedImageUri = data.getData();
 
-    // Get a reference to store file at chat_photos/<FILENAME>
     final StorageReference photoRef = mStorageRefernce.child(selectedImageUri.getLastPathSegment());
-
-    // Upload file to Firebase Storage
-        //   photoRef.putFile(selectedImageUri);
-
 
     UploadTask uploadTask =  photoRef.putFile(selectedImageUri);
     uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -467,7 +456,6 @@ public void uploadProfilePhoto(Intent data){
 
     public void onActivityResult(Fragment frag,int requestCode, int resultCode, Intent data) {
 
-       // frag.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
@@ -495,7 +483,6 @@ public void uploadProfilePhoto(Intent data){
       profileData.setUserID(user.getUid());
 
       mCreateFitnessClientforSteps();
-     // callChildListener();
 
   }
 

@@ -1,4 +1,4 @@
-package com.example.neha.appsdontlie_capstonestage2;
+/*package com.example.neha.appsdontlie_capstonestage2;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -47,3 +47,4 @@ public class SplashScreenActivity  extends AppCompatActivity {
     }
 
 }
+*/

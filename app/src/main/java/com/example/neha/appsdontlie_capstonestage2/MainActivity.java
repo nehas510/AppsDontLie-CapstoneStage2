@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation;
     private DataPresenter mPresenter;
     private MyProfileData profileData;
-    private List<MyProfileData>  profileDataList =  new ArrayList<>();
+
+    private  boolean isTab;
 
 
     // TODO: Rename and change types of parameters
@@ -42,38 +43,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mPresenter = new DataPresenter(this);
         mPresenter.initFirebase();
+        mPresenter.showProgress();
         mPresenter.callChildListener(new DataPresenter.MyPresenterCallback() {
             @Override
             public void onSuccess(MyProfileData data) {
 
-                if(savedInstanceState == null){
+                isTab = true;
 
-                              getSupportFragmentManager().beginTransaction().
-                             replace(R.id.content,new HomeFragment(mPresenter,data)).commit();
-                             profileData = data;
-                    setViews();
+                if (savedInstanceState == null) {
+                    mPresenter.hideProgress();
+
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.list_container, new DashboardFragment(mPresenter)).commit();
+                } else {
+                    if (savedInstanceState == null) {
+                        mPresenter.hideProgress();
+
+                        isTab = false;
+
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+                        profileData = data;
+                        setViews();
+
+                    }
 
                 }
-
-
             }
 
-            @Override
-            public void onFailure(DatabaseError error) {
+                @Override
+                public void onFailure (DatabaseError error){
 
 
-
-            }
-        });
+                }
+            });
 
     }
 
-  /*  public void setListData(MyProfileData data) {
-        profileDataList.add(data);
-
-        setViews();
-    }
-*/
  private void setViews(){
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 newFragment.setEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.no_transition));
             }
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content, newFragment, tag);
+            fragmentTransaction.replace(R.id.list_container, newFragment, tag);
             fragmentTransaction.addToBackStack(tag);
             fragmentTransaction.addSharedElement(sharedView, sharedElementName);
             fragmentTransaction.commit();
@@ -144,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onPause();
         mPresenter.onPauseEvent();
-        profileDataList.clear();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

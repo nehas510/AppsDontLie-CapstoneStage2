@@ -45,8 +45,6 @@ private View rootView;
     private Context context;
 
     private DataPresenter dPresenter;
-   private List<MyProfileData> readData;
-    private MyProfileData profileData;
 
 
    // private OnFragmentInteractionListener mListener;
@@ -89,8 +87,7 @@ private View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-      //  View rootView;
+
         context = getActivity();
         rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         updateRecyclerView(rootView);
@@ -110,7 +107,7 @@ private View rootView;
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
-        view.findViewById(R.id.share_fab_rank).setOnClickListener(new View.OnClickListener() {
+      /*  view.findViewById(R.id.share_fab_rank).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar snackbar = Snackbar
@@ -121,15 +118,12 @@ private View rootView;
                         .setText("I took "+ profileData.getSteps() + " today " +"\n-From Apps Dont Lie")
                         .getIntent(), getString(R.string.action_share)));
             }
-        });
+        });*/
     }
-
-
 
     public void openProgressFragment(MyProfileData data,int position, View view) {
 
         if (context instanceof MainActivity) {
-          //  MyProfileData data = readData.get(position);
             MyProgressFragment movieDetail = new MyProgressFragment();
             Bundle bundle = new Bundle();
             bundle.putString("transitionName", "transition" + position);

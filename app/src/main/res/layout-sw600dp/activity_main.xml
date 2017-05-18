@@ -5,24 +5,26 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-   >
+    android:orientation="horizontal"
+    >
 
     <FrameLayout
         android:id="@+id/content"
         tools:context=".MainActivity" tools:ignore="MergeRootFrame"
+        android:layout_width="412dp"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/list_container"
+        tools:context=".MainActivity" tools:ignore="MergeRootFrame"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1">
 
     </FrameLayout>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation" />
 
 </LinearLayout>
+

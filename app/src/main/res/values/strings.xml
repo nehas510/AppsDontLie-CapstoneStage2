@@ -38,4 +38,10 @@
     <string name="before">Before</string>
     <string name="after">After</string>
     <string name="action_share">Share</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
