@@ -96,13 +96,14 @@ public class MyProgressFragment extends Fragment {
         Bundle b = getArguments();
         if (b != null) {
             String transitionName = b.getString("transitionName");
-            final MyProfileData data = (MyProfileData) b.getSerializable("movie");
+            final MyProfileData data = (MyProfileData) b.getSerializable("profileData");
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mImageViewAfter.setTransitionName(transitionName);
                 mAfter.setText("After");
                 Picasso.with(getContext())
                         .load(data.getNewUrl())
+                        .placeholder(R.drawable.profile_pic)
                         .fit()
                         .into(mImageViewAfter);
 
@@ -128,6 +129,7 @@ public class MyProgressFragment extends Fragment {
                                 mAfter.setText("After");
                                 Picasso.with(getContext())
                                         .load(data.getNewUrl())
+                                        .placeholder(R.drawable.profile_pic)
                                         .fit()
                                         .into(mImageViewAfter);
                                 isButtonLongPressed = false;

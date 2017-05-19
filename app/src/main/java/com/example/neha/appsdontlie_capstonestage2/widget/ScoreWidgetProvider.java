@@ -1,10 +1,16 @@
 package com.example.neha.appsdontlie_capstonestage2.widget;
 
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
 import com.example.neha.appsdontlie_capstonestage2.MainActivity;
@@ -19,27 +25,55 @@ import java.util.Random;
 public class ScoreWidgetProvider extends AppWidgetProvider {
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int count = appWidgetIds.length;
-
-        for (int i = 0; i < count; i++) {
-            int widgetId = appWidgetIds[i];
-            String number = String.format("%03d", (new Random().nextInt(900) + 100));
-
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+                         int[] appWidgetIds) {
+        for (int appWidgetId : appWidgetIds) {
+            RemoteViews views = new RemoteViews(
+                    context.getPackageName(),
                     R.layout.widget_layout);
-            remoteViews.setTextViewText(R.id.name_view, number);
-            remoteViews.setTextViewText(R.id.rank, number);
-            remoteViews.setTextViewText(R.id.steps_count,number);
-            remoteViews.setImageViewResource(R.id.thumbnail,R.drawable.ic_share);
 
             Intent intent = new Intent(context, MainActivity.class);
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.thumbnail, pendingIntent);
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            PendingIntent pendingIntent = PendingIntent
+                    .getActivity(context, 0, intent, 0);
+            views.setOnClickPendingIntent(R.id.chore_widget_frame_layout, pendingIntent);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                setRemoteAdapter(context, views);
+            } else {
+                setRemoteAdapterV11(context, views);
+            }
+
+            Intent clickIntentTemplate = new Intent(context, MainActivity.class);
+            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(clickIntentTemplate)
+                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
+            views.setEmptyView(R.id.widget_list, R.id.widget_empty_view);
+
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+            super.onUpdate(context, appWidgetManager, appWidgetIds);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list);
         }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, getClass()));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
+        super.onReceive(context, intent);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setRemoteAdapterV11(Context context, RemoteViews views) {
+        views.setRemoteAdapter(0, R.id.widget_list,
+                new Intent(context.getApplicationContext(), WidgetService.class));
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void setRemoteAdapter(Context context, @NonNull RemoteViews views) {
+        views.setRemoteAdapter(R.id.widget_list,
+                new Intent(context.getApplicationContext(), WidgetService.class));
     }
 }

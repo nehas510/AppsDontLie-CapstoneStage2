@@ -1,7 +1,9 @@
 package com.example.neha.appsdontlie_capstonestage2.adapter;
 
 import android.support.v4.app.Fragment;
+import android.widget.RemoteViews;
 
+import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
@@ -13,6 +15,7 @@ import com.google.firebase.database.Query;
 public class DashBoardRecyclerAdapter extends FirebaseRecyclerAdapter<MyProfileData,RecyclerViewHolder> {
 
     private Fragment fragment;
+    private MyProfileData data;
 
 
     /**

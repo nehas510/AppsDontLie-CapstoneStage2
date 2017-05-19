@@ -1,53 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget_layout"
-    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:weightSum="1"
-    android:background="@color/primary"
-    >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <FrameLayout
+        android:id="@+id/chore_widget_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
 
         <TextView
-            android:id="@+id/rank"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:id="@+id/appwidget_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"
             android:gravity="center"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textSize="18sp"
+            android:text="@string/app_name"
+            android:textSize="20sp"
             android:textStyle="bold" />
-        <!--suppress AndroidLintContentDescription -->
-        <ImageView
-            android:id="@+id/thumbnail"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            />
+    </FrameLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/widget_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primary"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            tools:listitem="@layout/list_view_item" />
+    </FrameLayout>
 
     <TextView
-        android:id="@+id/name_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/widget_empty_view"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textSize="18sp"
-        android:textStyle="bold|italic" />
+        android:textAppearance="?android:textAppearanceLarge" />
 
-    <TextView
-            android:id="@+id/steps_count"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold|italic"
-            android:layout_weight="1.25" />
-    </LinearLayout>
-
+</LinearLayout>

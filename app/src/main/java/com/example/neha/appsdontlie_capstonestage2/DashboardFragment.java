@@ -119,13 +119,13 @@ private View rootView;
         }
 
         if (context instanceof MainActivity) {
-            MyProgressFragment movieDetail = new MyProgressFragment();
+            MyProgressFragment progFrag = new MyProgressFragment();
             Bundle bundle = new Bundle();
             bundle.putString("transitionName", "transition" + position);
-            bundle.putSerializable("movie", data);
+            bundle.putSerializable("profileData", data);
 
-            movieDetail.setArguments(bundle);
-            ((MainActivity)context).showFragmentWithTransition(this, movieDetail, "movieDetail", view, "transition" + position);
+            progFrag.setArguments(bundle);
+            ((MainActivity)context).showFragmentWithTransition(this, progFrag, "progFrag", view, "transition" + position);
         }
     }
 

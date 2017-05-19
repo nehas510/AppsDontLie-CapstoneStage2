@@ -1,5 +1,7 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 
 import android.os.Build;
@@ -18,6 +20,7 @@ import android.view.View;
 
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
+import com.example.neha.appsdontlie_capstonestage2.widget.ScoreWidgetProvider;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mPresenter.callChildListener(new DataPresenter.MyPresenterCallback() {
             @Override
             public void onSuccess(MyProfileData data) {
-
+              //  updateWidgets();
                 profileData = data;
 
                 if (findViewById(R.id.list_container) != null) {
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (savedInstanceState == null) {
                         mPresenter.hideProgress();
+
 
                         getSupportFragmentManager().beginTransaction().
                                 replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
@@ -197,6 +201,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateWidgets() {
+        ComponentName name = new ComponentName(this, ScoreWidgetProvider.class);
+        int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(name);
+        Intent intent = new Intent(this, ScoreWidgetProvider.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        intent.putExtra(AppWidgetManager.ACTION_APPWIDGET_UPDATE, ids);
+        sendBroadcast(intent);
     }
 
 

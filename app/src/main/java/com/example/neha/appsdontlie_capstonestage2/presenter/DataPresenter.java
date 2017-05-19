@@ -1,6 +1,7 @@
 package com.example.neha.appsdontlie_capstonestage2.presenter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
@@ -73,6 +74,7 @@ public class DataPresenter {
     public static  String pushID;
     private  String steps, calories, userKey;
     private Query mQueryRef;
+    private Context context;
     private MyProfileData  profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
@@ -80,6 +82,10 @@ public class DataPresenter {
 
     }
 
+    public DataPresenter(Context mView){
+        context = mView;
+
+    }
 
     public interface MyPresenterCallback{
 
@@ -139,7 +145,7 @@ public class DataPresenter {
 
         mFirebaseDb = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseDb.setPersistenceEnabled(true);
+       // mFirebaseDb.setPersistenceEnabled(true);
         mFirebaseStorage = FirebaseStorage.getInstance("gs://capstone-project-20ec5.appspot.com/");
         mDbUserRefernce = mFirebaseDb.getReference().child("Users");
         mStorageRefernce = mFirebaseStorage.getReference().child("photos");
