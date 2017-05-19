@@ -165,7 +165,7 @@ public class MyProgressFragment extends Fragment {
 
 
 
-     view.findViewById(R.id.share_fab_progress).setOnClickListener(new View.OnClickListener() {
+    /* view.findViewById(R.id.share_fab_progress).setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View view) {
            //  Bitmap bitMap = overlay(data.getNewUrl(),data.getOldUrl());
@@ -176,7 +176,7 @@ public class MyProgressFragment extends Fragment {
                      .setType("image/jpeg")
                      .getIntent(), getString(R.string.action_share)));
          }
-     });
+     });*/
  }
 
  private void showdata(MyProfileData data){

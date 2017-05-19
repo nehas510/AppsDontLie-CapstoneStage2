@@ -1,9 +1,12 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,6 +123,20 @@ public HomeFragment(){}
         mGender =     (TextView) view.findViewById(R.id.gender_value);
         mPhoto =      (ImageView) view.findViewById(R.id.imageViewShow);
 
+          view.findViewById(R.id.share_fab_rank).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar snackbar = Snackbar
+                        .make(view, "Share with your friends", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                        .setType("text/plain")
+                        .setText("I took "+ data.getSteps() + " today " +"\n-From Apps Dont Lie")
+                        .getIntent(), getString(R.string.action_share)));
+            }
+        });
+
+
     }
 
     private void setPhoto(String url){
@@ -145,7 +162,6 @@ public HomeFragment(){}
 
 
     }
-
 
 
 

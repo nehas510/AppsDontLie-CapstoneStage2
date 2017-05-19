@@ -43,6 +43,7 @@ private View rootView;
     private FirebaseRecyclerAdapter mAdapter;
     private  LinearLayoutManager layoutManager;
     private Context context;
+    private MyProfileData readData;
 
     private DataPresenter dPresenter;
 
@@ -107,21 +108,15 @@ private View rootView;
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
-      /*  view.findViewById(R.id.share_fab_rank).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar snackbar = Snackbar
-                        .make(view, "Share with your friends", Snackbar.LENGTH_LONG);
-                snackbar.show();
-                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                        .setType("text/plain")
-                        .setText("I took "+ profileData.getSteps() + " today " +"\n-From Apps Dont Lie")
-                        .getIntent(), getString(R.string.action_share)));
-            }
-        });*/
+
     }
 
     public void openProgressFragment(MyProfileData data,int position, View view) {
+
+        if(data.getUserID().equals(dPresenter.pushID)){
+            this.readData = data;
+
+        }
 
         if (context instanceof MainActivity) {
             MyProgressFragment movieDetail = new MyProgressFragment();
