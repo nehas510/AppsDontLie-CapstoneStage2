@@ -6,9 +6,9 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/chore_widget_frame_layout"
+        android:id="@+id/wigdet_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="48dp">
 
         <TextView
             android:id="@+id/appwidget_title"
@@ -36,6 +36,7 @@
             android:dividerHeight="0dp"
             tools:listitem="@layout/list_view_item" />
     </FrameLayout>
+<!--
 
     <TextView
         android:id="@+id/widget_empty_view"
@@ -43,5 +44,5 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceLarge" />
-
+-->
 </LinearLayout>

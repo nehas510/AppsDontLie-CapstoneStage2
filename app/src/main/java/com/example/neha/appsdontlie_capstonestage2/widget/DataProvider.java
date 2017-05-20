@@ -1,7 +1,5 @@
 package com.example.neha.appsdontlie_capstonestage2.widget;
 
-import android.app.LauncherActivity;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -9,8 +7,6 @@ import android.widget.RemoteViewsService;
 
 import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,8 +18,9 @@ import java.util.ArrayList;
 public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
     private static final String NAME = "name";
     private static final String STEPS = "steps";
+    private static final String PHOTO_URL = "newurl";
 
-    private ArrayList<MyProfileData> mChoreList = new ArrayList<>();
+    private ArrayList<MyProfileData> mProfileList = new ArrayList<>();
     private Context mContext = null;
     private Intent mIntent;
 
@@ -32,14 +29,14 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
         this.mContext = context;
     }
 
-    private void populateChoreWidgetList() {
+    private void populateWidgetList() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mChoreList.clear();
+                mProfileList.clear();
                 for (DataSnapshot choreSnapshot : dataSnapshot.getChildren()) {
-                    mChoreList.add(choreSnapshot.getValue(MyProfileData.class));
+                    mProfileList.add(choreSnapshot.getValue(MyProfileData.class));
                 }
             }
 
@@ -51,7 +48,7 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return mChoreList.size();
+        return mProfileList.size();
     }
 
     @Override
@@ -63,20 +60,25 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteView = new RemoteViews(
                 mContext.getPackageName(), R.layout.widget_layout);
-
-        String choreWidgetName = mChoreList.get(position).getName();
-
-        String choreWidgetChoreSteps = mChoreList.get(position).getSteps();
+        if (mProfileList != null) {
 
 
-        remoteView.setTextViewText(R.id.name_view_wigdet, choreWidgetName);
-        remoteView.setTextViewText(R.id.steps_count_wigdet, choreWidgetChoreSteps);
+            String widgetName = mProfileList.get(position).getName();
 
-        mIntent.putExtra(NAME, choreWidgetName);
-        mIntent.putExtra(STEPS, choreWidgetChoreSteps);
+            String widgetSteps = mProfileList.get(position).getSteps();
+            String widgetThumbnail = mProfileList.get(position).getNewUrl();
 
 
-        remoteView.setOnClickFillInIntent(R.id.card_layout_wigdet, mIntent);
+            remoteView.setTextViewText(R.id.widget_name_textview, widgetName);
+            remoteView.setTextViewText(R.id.widget_steps_textview, widgetSteps);
+
+
+            mIntent.putExtra(NAME, widgetName);
+            mIntent.putExtra(STEPS, widgetSteps);
+            mIntent.putExtra(PHOTO_URL, widgetThumbnail);
+
+        }
+        remoteView.setOnClickFillInIntent(R.id.widget_single_linear_layout, mIntent);
         return remoteView;
     }
 
@@ -102,7 +104,7 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged() {
-        populateChoreWidgetList();
+        populateWidgetList();
     }
 
     @Override
