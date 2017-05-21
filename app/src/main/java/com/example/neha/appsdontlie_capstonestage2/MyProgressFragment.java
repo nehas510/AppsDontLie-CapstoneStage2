@@ -1,5 +1,6 @@
 package com.example.neha.appsdontlie_capstonestage2;
 
+import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -51,6 +52,11 @@ public class MyProgressFragment extends Fragment {
     private boolean isButtonLongPressed = false;
   //  private DataPresenter pPresenter;
     private ImageButton mImageViewBefore , mImageViewAfter;
+    Intent mIntent;
+    private String newURL, oldURL;
+    public static final String PHOTO_URL = "newurl";
+    public static final String OLD_URL = "oldurl";
+
    // private MyProfileData data;
 
     private OnFragmentInteractionListener mListener;
@@ -59,6 +65,12 @@ public class MyProgressFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public MyProgressFragment(String new_url,String old_url){
+
+         this.newURL = new_url;
+        this.oldURL= old_url;
+
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -91,8 +103,16 @@ public class MyProgressFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_my_progress, container, false);
-      //  data = pPresenter.loadData();
         initViews(rootView);
+        mIntent = getActivity().getIntent();
+
+        if(mIntent!=null) {
+
+            newURL = mIntent.getStringExtra(PHOTO_URL);
+            oldURL = mIntent.getStringExtra(OLD_URL);
+        }
+
+
         Bundle b = getArguments();
         if (b != null) {
             String transitionName = b.getString("transitionName");
@@ -141,11 +161,63 @@ public class MyProgressFragment extends Fragment {
 
             }
 
-
-
-
             //  pPresenter.showProgress();
           //  showdata(data);
+        }
+
+        else{
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+               // mImageViewAfter.setTransitionName(transitionName);
+                mAfter.setText("After");
+                Picasso.with(getContext())
+                        .load(newURL)
+                        .placeholder(R.drawable.profile_pic)
+                        .fit()
+                        .into(mImageViewAfter);
+
+                mImageViewAfter.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        isButtonLongPressed = true;
+                        mAfter.setText("Before");
+
+                        Picasso.with(getContext())
+                                .load(oldURL)
+                                .fit()
+                                .into(mImageViewAfter);
+
+                        return true;
+                    }
+                });
+
+
+                mImageViewAfter.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.onTouchEvent(event);
+                        // We're only interested in when the button is released.
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            // We're only interested in anything if our speak button is currently pressed.
+                            if (isButtonLongPressed) {
+                                // Do something when the button is released.
+                                mAfter.setText("After");
+                                Picasso.with(getContext())
+                                        .load(newURL)
+                                        .placeholder(R.drawable.profile_pic)
+                                        .fit()
+                                        .into(mImageViewAfter);
+                                isButtonLongPressed = false;
+                            }
+                        }
+                        return false;
+                    }
+                });
+
+            }
+
+
+
         }
         return rootView;
     }

@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                         getSupportFragmentManager().beginTransaction().
                                 replace(R.id.list_container, new DashboardFragment(mPresenter)).commit();
+                        updateWidgets();
                     }
                 } else {
                     if (savedInstanceState == null) {
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         setViews();
 
                     }
-                    updateWidgets();
+
 
                 }
             }
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new HomeFragment(mPresenter, profileData);
                         break;
                     case R.id.navigation_dashboard:
-                        fragment = new DashboardFragment(mPresenter);
+                    { updateWidgets();
+                        fragment = new DashboardFragment(mPresenter);}
                         break;
                     case R.id.navigation_settings:
                         fragment = new MySettingsFragment(mPresenter, profileData);
