@@ -7,17 +7,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,48 +29,13 @@
 
 
 
-
-
-        </LinearLayout>
-<!--
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textBefore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-
-                android:text="@string/before"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
-
-            <ImageView
-                android:id="@+id/imageViewBefore"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1" />
-
-
-        </LinearLayout>
-
-        -->
-    </LinearLayout>
-
-
         <TextView
             android:id="@+id/textViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:padding="2dp"
-            android:text="This is how you look now, feeling motivated???"
+            android:text="@string/long_press"
             android:textSize="18dp" />
     </LinearLayout>
 
