@@ -19,8 +19,9 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
     private static final String NAME = "name";
     private static final String STEPS = "steps";
     private static final String PHOTO_URL = "newurl";
+    private static final String CALORIES = "calories";
 
-    private ArrayList<MyProfileData> mProfileList = new ArrayList<>();
+    private ArrayList<MyProfileData> mProfileList = new ArrayList<MyProfileData>();
     private Context mContext = null;
     private Intent mIntent;
 
@@ -58,26 +59,24 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int position) {
-        RemoteViews remoteView = new RemoteViews(
-                mContext.getPackageName(), R.layout.widget_layout);
-        if (mProfileList != null) {
-
+       final RemoteViews remoteView = new RemoteViews(
+                mContext.getPackageName(), R.layout.list_view_item);
 
             String widgetName = mProfileList.get(position).getName();
 
             String widgetSteps = mProfileList.get(position).getSteps();
-            String widgetThumbnail = mProfileList.get(position).getNewUrl();
-
+            String widgetCalories = mProfileList.get(position).getCalories();
 
             remoteView.setTextViewText(R.id.widget_name_textview, widgetName);
             remoteView.setTextViewText(R.id.widget_steps_textview, widgetSteps);
+            remoteView.setTextViewText(R.id.widget_calories_textview,widgetCalories);
 
 
             mIntent.putExtra(NAME, widgetName);
             mIntent.putExtra(STEPS, widgetSteps);
-            mIntent.putExtra(PHOTO_URL, widgetThumbnail);
+            mIntent.putExtra(CALORIES,widgetCalories);
 
-        }
+
         remoteView.setOnClickFillInIntent(R.id.widget_single_linear_layout, mIntent);
         return remoteView;
     }

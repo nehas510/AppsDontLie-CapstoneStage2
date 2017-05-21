@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mPresenter.callChildListener(new DataPresenter.MyPresenterCallback() {
             @Override
             public void onSuccess(MyProfileData data) {
-              //  updateWidgets();
+
                 profileData = data;
 
                 if (findViewById(R.id.list_container) != null) {
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         setViews();
 
                     }
+                    updateWidgets();
 
                 }
             }
