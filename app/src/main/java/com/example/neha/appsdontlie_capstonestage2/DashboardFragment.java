@@ -111,7 +111,7 @@ private View rootView;
 
     }
 
-    public void openProgressFragment(MyProfileData data,int position, View view) {
+  /*  public void openProgressFragment(MyProfileData data,int position, View view) {
 
         if(data.getUserID().equals(dPresenter.pushID)){
             this.readData = data;

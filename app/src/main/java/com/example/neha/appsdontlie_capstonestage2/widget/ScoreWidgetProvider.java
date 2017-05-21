@@ -14,6 +14,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
 import com.example.neha.appsdontlie_capstonestage2.MainActivity;
+import com.example.neha.appsdontlie_capstonestage2.MyProgressActivity;
 import com.example.neha.appsdontlie_capstonestage2.MyProgressFragment;
 import com.example.neha.appsdontlie_capstonestage2.R;
 
@@ -44,7 +45,7 @@ public class ScoreWidgetProvider extends AppWidgetProvider {
                 setRemoteAdapterV11(context, views);
             }
 
-            Intent clickIntentTemplate = new Intent(context,MainActivity.class);
+            Intent clickIntentTemplate = new Intent(context,MyProgressActivity.class);
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)
                     .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

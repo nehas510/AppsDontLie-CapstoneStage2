@@ -1,5 +1,6 @@
 package com.example.neha.appsdontlie_capstonestage2.adapter;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.neha.appsdontlie_capstonestage2.DashboardFragment;
+import com.example.neha.appsdontlie_capstonestage2.MyProgressActivity;
 import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
 import com.squareup.picasso.Picasso;
@@ -33,9 +35,10 @@ public class RecyclerViewHolder  extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DashboardFragment)fragment).openProgressFragment(readData,getAdapterPosition(), v.findViewById(R.id.thumbnail));
+              //  ((DashboardFragment)fragment).openProgressFragment(readData,getAdapterPosition(), v.findViewById(R.id.thumbnail));
 
-
+                Intent intent = new Intent(fragment.getContext(), MyProgressActivity.class);
+                   fragment.startActivity(intent);
             }
         });
 
