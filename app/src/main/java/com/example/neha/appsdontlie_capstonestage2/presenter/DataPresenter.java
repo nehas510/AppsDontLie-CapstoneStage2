@@ -427,25 +427,37 @@ public void uploadProfilePhoto(Intent data){
         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
             Uri downloadUrl = taskSnapshot.getDownloadUrl();
             Toast.makeText(activity,"uploaded the data to " + downloadUrl,Toast.LENGTH_SHORT).show();
-            String newPhotoUrl = downloadUrl.toString();
+           final String newPhotoUrl = downloadUrl.toString();
 
-            if(newUser && profileData.getNewUrl()==null){
-                profileData.setOldUrl(newPhotoUrl);
-                profileData.setNewUrl(newPhotoUrl);
-                mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue( profileData.getOldUrl());
-                mDbUserRefernce.getRef().child(pushID).child("newurl").setValue( profileData.getNewUrl());
-                newUser = false;
+            callChildListener(new MyPresenterCallback() {
+                @Override
+                public void onSuccess(MyProfileData data) {
+                    if(data.getNewUrl()==null){
+                        profileData.setOldUrl(newPhotoUrl);
+                        profileData.setNewUrl(newPhotoUrl);
+                        mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue( profileData.getOldUrl());
+                        mDbUserRefernce.getRef().child(pushID).child("newurl").setValue( profileData.getNewUrl());
+                        newUser = false;
 
-            }
+                    }
 
-            else {
-                String oldphotoUrl = profileData.getNewUrl();
-                profileData.setOldUrl(oldphotoUrl);
-                profileData.setNewUrl(newPhotoUrl);
-                mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue(profileData.getOldUrl());
-                mDbUserRefernce.getRef().child(pushID).child("newurl").setValue(profileData.getNewUrl());
+                    else {
+                        String oldphotoUrl = data.getNewUrl();
+                        profileData.setOldUrl(oldphotoUrl);
+                        profileData.setNewUrl(newPhotoUrl);
+                        mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue(profileData.getOldUrl());
+                        mDbUserRefernce.getRef().child(pushID).child("newurl").setValue(profileData.getNewUrl());
 
-            }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(DatabaseError error) {
+
+                }
+            });
+
 
         }
     });

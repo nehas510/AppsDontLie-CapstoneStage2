@@ -57,7 +57,6 @@ public class MyProgressFragment extends Fragment {
     public static final String PHOTO_URL = "newurl";
     public static final String OLD_URL = "oldurl";
 
-   // private MyProfileData data;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,12 +64,6 @@ public class MyProgressFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public MyProgressFragment(String new_url,String old_url){
-
-         this.newURL = new_url;
-        this.oldURL= old_url;
-
-    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
