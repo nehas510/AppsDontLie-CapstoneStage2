@@ -35,10 +35,10 @@ public class RecyclerViewHolder  extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  ((DashboardFragment)fragment).openProgressFragment(readData,getAdapterPosition(), v.findViewById(R.id.thumbnail));
+               ((DashboardFragment)fragment).openProgressFragment(readData,getAdapterPosition(), v.findViewById(R.id.thumbnail));
 
-                Intent intent = new Intent(fragment.getContext(), MyProgressActivity.class);
-                   fragment.startActivity(intent);
+             /*   Intent intent = new Intent(fragment.getContext(), MyProgressActivity.class);
+                   fragment.startActivity(intent);*/
             }
         });
 
