@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
 
     private void populateWidgetList() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        Query mQuery = databaseReference.orderByChild("steps");
+        mQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mProfileList.clear();
@@ -70,21 +72,23 @@ public class DataProvider implements RemoteViewsService.RemoteViewsFactory {
        final RemoteViews remoteView = new RemoteViews(
                 mContext.getPackageName(), R.layout.list_view_item);
 
+        if(mProfileList!=null) {
+
             String widgetName = mProfileList.get(position).getName();
             String widgetSteps = mProfileList.get(position).getSteps();
             String widgetCalories = mProfileList.get(position).getCalories();
 
             remoteView.setTextViewText(R.id.widget_name_textview, widgetName);
             remoteView.setTextViewText(R.id.widget_steps_textview, widgetSteps);
-            remoteView.setTextViewText(R.id.widget_calories_textview,widgetCalories);
-        Intent mIntent = new Intent();
-         /*   mIntent.putExtra(NAME, widgetName);
-            mIntent.putExtra(STEPS, widgetSteps);
-            mIntent.putExtra(CALORIES,widgetCalories);*/
-            mIntent.putExtra(OLD_URL,mProfileList.get(position).getOldUrl());
-            mIntent.putExtra(PHOTO_URL,mProfileList.get(position).getNewUrl());
+            remoteView.setTextViewText(R.id.widget_calories_textview, widgetCalories);
+            Intent mIntent = new Intent();
 
-        remoteView.setOnClickFillInIntent(R.id.widget_single_linear_layout, mIntent);
+            mIntent.putExtra(OLD_URL, mProfileList.get(position).getOldUrl());
+            mIntent.putExtra(PHOTO_URL, mProfileList.get(position).getNewUrl());
+
+
+            remoteView.setOnClickFillInIntent(R.id.widget_single_linear_layout, mIntent);
+        }
         return remoteView;
     }
 

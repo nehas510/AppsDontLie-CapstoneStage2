@@ -37,7 +37,7 @@ public class DashBoardRecyclerAdapter extends FirebaseRecyclerAdapter<MyProfileD
     @Override
     protected void populateViewHolder(RecyclerViewHolder viewHolder, MyProfileData model, int position) {
 
-        viewHolder.textViewRank.setText(String.valueOf(getItemCount()- position));
+        viewHolder.textViewRank.setText(String.valueOf(getItemCount() - position));
         viewHolder.shareDataInTransition(fragment,model,position);
 
     }

@@ -70,20 +70,11 @@ public class DataPresenter {
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static final int RC_SIGN_IN = 1;
     private static final int RC_PHOTO_PICKER = 2;
-    private static boolean newUser = true;
     public static  String pushID;
-    private  String steps, calories, userKey;
-    private Query mQueryRef;
-    private Context context;
     private MyProfileData  profileData = new MyProfileData();
 
     public DataPresenter(Activity mView){
            activity = mView;
-
-    }
-
-    public DataPresenter(Context mView){
-        context = mView;
 
     }
 
@@ -169,8 +160,6 @@ public class DataPresenter {
 
     public void callChildListener(final MyPresenterCallback callback) {
 
-        mQueryRef = mDbUserRefernce.orderByChild("steps");
-
         if (mChildEventListener == null) {
 
             mChildEventListener = new ChildEventListener() {
@@ -217,7 +206,7 @@ public class DataPresenter {
 
                 }};
 
-            mQueryRef.addChildEventListener(mChildEventListener);
+            mDbUserRefernce.addChildEventListener(mChildEventListener);
 
 
             }
@@ -230,50 +219,6 @@ public class DataPresenter {
     }
 
 
-  /*  public void callChildListener() {
-
-       mQueryRef =  mDbUserRefernce.orderByChild("steps");
-
-        if (mChildEventListener == null) {
-
-            mChildEventListener = new ChildEventListener() {
-
-
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                    MyProfileData listOfData = dataSnapshot.getValue(MyProfileData.class);
-
-                    //((MainActivity)activity).setListData(listOfData);
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }};
-
-            mQueryRef.addChildEventListener(mChildEventListener);
-
-
-        }
-    }
-*/
 
     public void mCreateFitnessClientforSteps() {
 
@@ -437,7 +382,6 @@ public void uploadProfilePhoto(Intent data){
                         profileData.setNewUrl(newPhotoUrl);
                         mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue( profileData.getOldUrl());
                         mDbUserRefernce.getRef().child(pushID).child("newurl").setValue( profileData.getNewUrl());
-                        newUser = false;
 
                     }
 

@@ -8,7 +8,8 @@
     <LinearLayout
         android:id="@+id/widget_single_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin"
         android:orientation="horizontal"
         android:background="@color/primary_light"
 

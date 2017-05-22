@@ -37,8 +37,6 @@ public class RecyclerViewHolder  extends RecyclerView.ViewHolder{
             public void onClick(View v) {
                ((DashboardFragment)fragment).openProgressFragment(readData,getAdapterPosition(), v.findViewById(R.id.thumbnail));
 
-             /*   Intent intent = new Intent(fragment.getContext(), MyProgressActivity.class);
-                   fragment.startActivity(intent);*/
             }
         });
 

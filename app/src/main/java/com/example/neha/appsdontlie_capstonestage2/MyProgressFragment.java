@@ -50,7 +50,6 @@ public class MyProgressFragment extends Fragment {
     private TextView mBefore;
     private TextView mAfter;
     private boolean isButtonLongPressed = false;
-  //  private DataPresenter pPresenter;
     private ImageButton mImageViewBefore , mImageViewAfter;
     Intent mIntent;
     private String newURL, oldURL;
@@ -116,7 +115,6 @@ public class MyProgressFragment extends Fragment {
                 mAfter.setText("After");
                 Picasso.with(getContext())
                         .load(data.getNewUrl())
-                        .placeholder(R.drawable.profile_pic)
                         .fit()
                         .into(mImageViewAfter);
 
@@ -142,7 +140,6 @@ public class MyProgressFragment extends Fragment {
                                 mAfter.setText("After");
                                 Picasso.with(getContext())
                                         .load(data.getNewUrl())
-                                        .placeholder(R.drawable.profile_pic)
                                         .fit()
                                         .into(mImageViewAfter);
                                 isButtonLongPressed = false;
@@ -165,7 +162,6 @@ public class MyProgressFragment extends Fragment {
                 mAfter.setText("After");
                 Picasso.with(getContext())
                         .load(newURL)
-                        .placeholder(R.drawable.profile_pic)
                         .fit()
                         .into(mImageViewAfter);
 
@@ -197,7 +193,6 @@ public class MyProgressFragment extends Fragment {
                                 mAfter.setText("After");
                                 Picasso.with(getContext())
                                         .load(newURL)
-                                        .placeholder(R.drawable.profile_pic)
                                         .fit()
                                         .into(mImageViewAfter);
                                 isButtonLongPressed = false;
