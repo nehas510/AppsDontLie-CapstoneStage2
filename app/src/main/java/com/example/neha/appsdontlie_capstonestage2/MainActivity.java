@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -129,6 +130,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void showUIAfterSignin(MyProfileData data){
+
+        profileData = data;
+
+                if (findViewById(R.id.list_container) != null) {
+
+                    isTab = true;
+
+                    mPresenter.hideProgress();
+
+
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.list_container, new DashboardFragment(mPresenter)).commit();
+
+                }
+                else {
+
+                    mPresenter.hideProgress();
+
+                    isTab = false;
+
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+
+                    setViews();
+
+                }
+
+
+
+    }
 
     public void showFragmentWithTransition(Fragment current, Fragment newFragment, String tag, View sharedView, String sharedElementName) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -175,6 +210,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        mPresenter.callChildListener(new DataPresenter.MyPresenterCallback() {
+            @Override
+            public void onSuccess(MyProfileData data) {
+                showUIAfterSignin(data);
+            }
+
+            @Override
+            public void onFailure(DatabaseError error) {
+
+                Log.e("Neha","Error!!!");
+
+            }
+        });
+
+
+
 
     }
 

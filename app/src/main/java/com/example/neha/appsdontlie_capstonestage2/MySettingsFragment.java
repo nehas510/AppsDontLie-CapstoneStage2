@@ -4,6 +4,8 @@ package com.example.neha.appsdontlie_capstonestage2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,8 @@ import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +30,7 @@ import com.squareup.picasso.Picasso;
  * create an instance of this fragment.
  */
 
-public class MySettingsFragment extends Fragment {
+public class MySettingsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<MyProfileData>>{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -83,9 +87,10 @@ public class MySettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_my_settings, container, false);
         initViews(rootView);
+        getLoaderManager().initLoader(0,null,this);
         if(readData.getWeight()!=null)
             showData();
 
@@ -176,5 +181,19 @@ public class MySettingsFragment extends Fragment {
 
     }
 
+    @Override
+    public Loader<List<MyProfileData>> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<MyProfileData>> loader, List<MyProfileData> data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<MyProfileData>> loader) {
+
+    }
 }
 

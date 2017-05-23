@@ -12,6 +12,9 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.neha.appsdontlie_capstonestage2.DashboardFragment;
+import com.example.neha.appsdontlie_capstonestage2.HomeFragment;
+import com.example.neha.appsdontlie_capstonestage2.MainActivity;
 import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.SimpleProgressBar;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;

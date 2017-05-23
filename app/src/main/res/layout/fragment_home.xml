@@ -19,8 +19,9 @@
 
             <ImageView
                 android:id="@+id/imageViewShow"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:contentDescription="@string/showImage"
+                android:layout_width="@dimen/image_size"
+                android:layout_height="@dimen/image_size"
 
                 android:padding="@dimen/activity_horizontal_margin"
                 />
@@ -31,6 +32,7 @@
                 android:id="@+id/name_first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/name"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:layout_gravity="center"
                 android:textSize="20dp"
@@ -46,6 +48,7 @@
 
             <TextView
                 android:id="@+id/steps"
+                android:contentDescription="@string/steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -56,6 +59,7 @@
 
             <TextView
                 android:id="@+id/step_count"
+                android:contentDescription="@string/steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -72,23 +76,27 @@
 
             <TextView
                 android:id="@+id/calories"
+                android:contentDescription="@string/calories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/activity_horizontal_margin"
 
                 android:text="@string/calories"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_20"
+
                 android:textStyle="bold|italic" />
 
             <TextView
                 android:id="@+id/calories_count"
+                android:contentDescription="@string/calories"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/activity_horizontal_margin"
-
-                android:textSize="20dp" />
+                android:textSize="@dimen/text_size_20"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -105,7 +113,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:text="@string/weight"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_20"
                 android:textStyle="bold|italic" />
 
             <TextView
@@ -113,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="kgs"
+                android:hint="@string/kgs"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:textSize="20dp" />
         </LinearLayout>
@@ -134,7 +142,7 @@
                 android:inputType="numberDecimal"
 
                 android:text="@string/height"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_20"
                 android:textStyle="bold|italic" />
 
             <TextView
@@ -142,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="cms"
+                android:hint="@string/cms"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:textSize="20dp" />
         </LinearLayout>
@@ -161,7 +169,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:text="@string/gender"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_20"
                 android:textStyle="bold|italic" />
 
             <TextView
@@ -171,7 +179,7 @@
                 android:layout_gravity="center"
                 android:hint="@string/female_male"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:textSize="20dp" />
+                android:textSize="@dimen/text_size_20" />
 
 
         </LinearLayout>
@@ -181,8 +189,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/share_fab_rank"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"

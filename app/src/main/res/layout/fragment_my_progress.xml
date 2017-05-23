@@ -15,16 +15,17 @@
             <TextView
                 android:id="@+id/textAfter"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/height_100"
                 android:layout_weight="1"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_size_24"
                 android:textStyle="bold|italic" />
 
             <ImageButton
                 android:id="@+id/thumbnail"
+                android:contentDescription="@string/showImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/margin_image"
                 android:layout_weight="1" />
 
 
