@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (savedInstanceState == null) {
                         mPresenter.hideProgress();
-
+                        invalidateOptionsMenu();
 
                         getSupportFragmentManager().beginTransaction().
                                 replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 if (findViewById(R.id.list_container) != null) {
 
                     isTab = true;
+                    invalidateOptionsMenu();
+
 
                     mPresenter.hideProgress();
 
@@ -250,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.settings) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.list_container, new MySettingsFragment(mPresenter, profileData))
+                        .addToBackStack(null)
                         .commit();
                 return true;
             }

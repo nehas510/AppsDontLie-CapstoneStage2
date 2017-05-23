@@ -131,7 +131,7 @@ public HomeFragment(){}
                 snackbar.show();
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
-                        .setText("I took "+ data.getSteps() + " today " +"\n-From Apps Dont Lie")
+                        .setText("I took "+ data.getSteps() + " steps today " +"\n-From Apps Dont Lie")
                         .getIntent(), getString(R.string.action_share)));
             }
         });
