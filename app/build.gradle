@@ -18,16 +18,17 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file("capstoneKey.keystore")
-            storePassword "password"
-            keyAlias "MyAndroidKey"
-            keyPassword "password"
+
+        config {
+            keyAlias 'androidKey'
+            keyPassword '11111111'
+            storeFile file("$rootDir/myProjectKey.jks")
+            storePassword '11111111'
         }
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -35,11 +36,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     //compile 'com.firebaseui:firebase-ui-auth:1.2.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.google.firebase:firebase-database:10.2.0'

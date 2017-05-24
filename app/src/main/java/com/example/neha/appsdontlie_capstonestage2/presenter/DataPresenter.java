@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.neha.appsdontlie_capstonestage2.DashboardFragment;
 import com.example.neha.appsdontlie_capstonestage2.HomeFragment;
@@ -97,7 +96,7 @@ public class DataPresenter {
                 if(user !=null){
 
                      onSigninInitialize(user);
-                    Toast.makeText(activity,"You are in my app",Toast.LENGTH_SHORT).show();
+
 
                 }
                 else{
@@ -374,7 +373,6 @@ public void uploadProfilePhoto(Intent data){
         @Override
         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
             Uri downloadUrl = taskSnapshot.getDownloadUrl();
-            Toast.makeText(activity,"uploaded the data to " + downloadUrl,Toast.LENGTH_SHORT).show();
            final String newPhotoUrl = downloadUrl.toString();
 
             callChildListener(new MyPresenterCallback() {
@@ -424,12 +422,9 @@ public void uploadProfilePhoto(Intent data){
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                // Sign-in succeeded, set up the UI
-                Toast.makeText(activity, "Signed in!", Toast.LENGTH_SHORT).show();
+
             } else if (resultCode == RESULT_CANCELED) {
-                // Sign in was canceled by the user, finish the activity
-                Toast.makeText(activity, "Sign in canceled", Toast.LENGTH_SHORT).show();
-                // finish();
+
             }
         }
             else if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {

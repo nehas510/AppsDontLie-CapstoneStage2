@@ -109,7 +109,7 @@ public class MySettingsFragment extends Fragment implements LoaderManager.Loader
         @Override
         public void onClick(View v) {
             pushData();
-            Toast.makeText(getContext(), "Changes saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.changes_saved, Toast.LENGTH_SHORT).show();
         }
     };
 
