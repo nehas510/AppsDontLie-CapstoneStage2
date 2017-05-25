@@ -54,4 +54,6 @@
     <string name="kgs">kgs</string>
     <string name="cms">cms</string>
     <string name="pickImage">Pick Image</string>
+    <string name="connection_lost">Connection lost.  Cause: Network Lost.</string>
+    <string name="connection_error">Connection lost.  Reason: Service Disconnected</string>
 </resources>

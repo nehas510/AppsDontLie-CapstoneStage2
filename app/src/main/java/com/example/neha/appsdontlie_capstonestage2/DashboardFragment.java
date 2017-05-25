@@ -38,45 +38,33 @@ private View rootView;
     private FirebaseRecyclerAdapter mAdapter;
     private  LinearLayoutManager layoutManager;
     private Context context;
-    private MyProfileData readData;
+   // private MyProfileData readData;
 
     private DataPresenter dPresenter;
-
-
-   // private OnFragmentInteractionListener mListener;
-
-    public DashboardFragment(DataPresenter presenter) {
-
-        this.dPresenter = presenter;
-
-    }
-
 
     public DashboardFragment(){}
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment DashboardFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DashboardFragment newInstance(String param1, String param2) {
+    public static DashboardFragment newInstance(DataPresenter presenter) {
         DashboardFragment fragment = new DashboardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("presenter",presenter);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        Bundle b = getArguments();
+        if (b != null) {
+            this.dPresenter = (DataPresenter) b.getSerializable("presenter");
         }
     }
 
@@ -108,11 +96,11 @@ private View rootView;
 
     public void openProgressFragment(MyProfileData data,int position, View view) {
 
-        if(data.getUserID().equals(dPresenter.pushID)){
+    /*    if(data.getUserID().equals(dPresenter.pushID)){
             this.readData = data;
 
         }
-
+*/
         if (context instanceof MainActivity) {
             MyProgressFragment progFrag = new MyProgressFragment();
             Bundle bundle = new Bundle();

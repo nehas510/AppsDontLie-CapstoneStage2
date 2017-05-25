@@ -1,4 +1,4 @@
-package com.example.neha.appsdontlie_capstonestage2.loaders;
+/*package com.example.neha.appsdontlie_capstonestage2.loaders;
 
 import android.content.Context;
 import android.support.v4.content.Loader;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Created by neha on 5/22/17.
-**/
+*
 
 public class FirebaseDataLoaders extends Loader<List<MyProfileData>> implements ValueEventListener {
 
@@ -58,4 +58,4 @@ public class FirebaseDataLoaders extends Loader<List<MyProfileData>> implements 
     }
 }
 
-
+*/

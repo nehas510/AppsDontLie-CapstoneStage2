@@ -51,36 +51,32 @@ public class MySettingsFragment extends Fragment implements LoaderManager.Loader
         // Required empty public constructor
     }
 
-    public MySettingsFragment(DataPresenter presenter,MyProfileData readData) {
-        this.readData = readData;
-
-        this.sPresenter = presenter;
-        // Required empty public constructor
-    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment MySettingsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MySettingsFragment newInstance(String param1, String param2) {
+    public static MySettingsFragment newInstance(DataPresenter presenter,MyProfileData profileData) {
         MySettingsFragment fragment = new MySettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("presenter",presenter);
+        bundle.putSerializable("profileData", profileData);
+
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        Bundle b = getArguments();
+        if (b != null) {
+            this.sPresenter = (DataPresenter) b.getSerializable("presenter");
+            this.readData = (MyProfileData) b.getSerializable("profileData");
         }
     }
 
@@ -91,8 +87,10 @@ public class MySettingsFragment extends Fragment implements LoaderManager.Loader
         View rootView = inflater.inflate(R.layout.fragment_my_settings, container, false);
         initViews(rootView);
         getLoaderManager().initLoader(0,null,this);
-        if(readData.getWeight()!=null)
-            showData();
+        if(readData!=null) {
+            if (readData.getWeight() != null)
+                showData();
+        }
 
 
         mPhoto.setOnClickListener(addPicture);
@@ -175,7 +173,7 @@ public class MySettingsFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         sPresenter.onActivityResult(MySettingsFragment.this,requestCode,resultCode,data);
 

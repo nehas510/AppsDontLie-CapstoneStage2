@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -24,10 +25,13 @@ import com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter;
 import com.example.neha.appsdontlie_capstonestage2.widget.ScoreWidgetProvider;
 import com.google.firebase.database.DatabaseError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import static com.example.neha.appsdontlie_capstonestage2.presenter.DataPresenter.RC_SIGN_IN;
+
+public class MainActivity extends AppCompatActivity implements Serializable {
 
     private FragmentManager fragmentManager;
     private Fragment fragment;
@@ -64,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
                         invalidateOptionsMenu();
 
                         getSupportFragmentManager().beginTransaction().
-                                replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+                                replace(R.id.content, new HomeFragment().newInstance(mPresenter,data)).commit();
+
 
                         getSupportFragmentManager().beginTransaction().
-                                replace(R.id.list_container, new DashboardFragment(mPresenter)).commit();
+                                replace(R.id.list_container, new DashboardFragment().newInstance(mPresenter)).commit();
                         updateWidgets();
                     }
                 } else {
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         isTab = false;
 
                         getSupportFragmentManager().beginTransaction().
-                                replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+                                replace(R.id.content, new HomeFragment().newInstance(mPresenter,data)).commit();
                         profileData = data;
                         setViews();
 
@@ -108,14 +113,14 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.navigation_home:
-                        fragment = new HomeFragment(mPresenter, profileData);
+                        fragment = new HomeFragment().newInstance(mPresenter,profileData);
                         break;
                     case R.id.navigation_dashboard:
                     { updateWidgets();
-                        fragment = new DashboardFragment(mPresenter);}
+                        fragment = new DashboardFragment().newInstance(mPresenter);}
                         break;
                     case R.id.navigation_settings:
-                        fragment = new MySettingsFragment(mPresenter, profileData);
+                        fragment = new MySettingsFragment().newInstance(mPresenter,profileData);
                         break;
 
                 }
@@ -144,10 +149,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+                            replace(R.id.content, new HomeFragment().newInstance(mPresenter,data)).commit();
 
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.list_container, new DashboardFragment(mPresenter)).commit();
+                            replace(R.id.list_container, new DashboardFragment().newInstance(mPresenter)).commit();
 
                 }
                 else {
@@ -157,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     isTab = false;
 
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.content, new HomeFragment(mPresenter, data)).commit();
+                            replace(R.id.content, new HomeFragment().newInstance(mPresenter,data)).commit();
 
                     setViews();
 
@@ -212,20 +217,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mPresenter.callChildListener(new DataPresenter.MyPresenterCallback() {
-            @Override
-            public void onSuccess(MyProfileData data) {
-                showUIAfterSignin(data);
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+
+                mPresenter.callChildListener(new DataPresenter.MyPresenterCallback() {
+                    @Override
+                    public void onSuccess(MyProfileData data) {
+                        showUIAfterSignin(data);
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError error) {
+
+                        Log.e("Neha", "Error!!!");
+
+                    }
+                });
             }
-
-            @Override
-            public void onFailure(DatabaseError error) {
-
-                Log.e("Neha","Error!!!");
-
-            }
-        });
-
+        }
 
 
 
@@ -251,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             //noinspection SimplifiableIfStatement
             if (id == R.id.settings) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.list_container, new MySettingsFragment(mPresenter, profileData))
+                        .replace(R.id.list_container, new MySettingsFragment().newInstance(mPresenter,profileData))
                         .addToBackStack(null)
                         .commit();
                 return true;

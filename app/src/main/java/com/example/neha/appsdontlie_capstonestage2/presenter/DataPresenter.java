@@ -7,13 +7,12 @@ import android.content.IntentSender;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-
-import com.example.neha.appsdontlie_capstonestage2.DashboardFragment;
-import com.example.neha.appsdontlie_capstonestage2.HomeFragment;
-import com.example.neha.appsdontlie_capstonestage2.MainActivity;
+import com.example.neha.appsdontlie_capstonestage2.MySettingsFragment;
 import com.example.neha.appsdontlie_capstonestage2.R;
 import com.example.neha.appsdontlie_capstonestage2.SimpleProgressBar;
 import com.example.neha.appsdontlie_capstonestage2.data.MyProfileData;
@@ -43,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +54,7 @@ import static android.content.ContentValues.TAG;
  * Created by neha on 5/3/17.
  */
 
-public class DataPresenter {
+public class DataPresenter implements Serializable,Parcelable{
 
     private Activity activity;
     private static final int REQUEST_OAUTH = 1;
@@ -78,6 +78,32 @@ public class DataPresenter {
     public DataPresenter(Activity mView){
            activity = mView;
 
+    }
+
+    protected DataPresenter(Parcel in) {
+        authInProgress = in.readByte() != 0;
+    }
+
+    public static final Creator<DataPresenter> CREATOR = new Creator<DataPresenter>() {
+        @Override
+        public DataPresenter createFromParcel(Parcel in) {
+            return new DataPresenter(in);
+        }
+
+        @Override
+        public DataPresenter[] newArray(int size) {
+            return new DataPresenter[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (authInProgress ? 1 : 0));
     }
 
     public interface MyPresenterCallback{
@@ -245,9 +271,9 @@ public class DataPresenter {
                                 // If your connection to the sensor gets lost at some point,
                                 // you'll be able to determine the reason and react to it here.
                                 if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
-                                    Log.i(TAG, "Connection lost.  Cause: Network Lost.");
+                                    Log.i(TAG, "@string/connection_lost");
                                 } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
-                                    Log.i(TAG, "Connection lost.  Reason: Service Disconnected");
+                                    Log.i(TAG, "@string/connection_error");
                                 }
                             }
                         }
@@ -256,7 +282,7 @@ public class DataPresenter {
                             // Called whenever the API client fails to connect.
                             @Override
                             public void onConnectionFailed(ConnectionResult result) {
-                                Log.i(TAG, "Connection failed. Cause: " + result.toString());
+                                Log.i(TAG, "@string/connection_failed" + result.toString());
                                 if (!result.hasResolution()) {
                                     // Show the localized error dialog
                                     GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(),
@@ -357,7 +383,7 @@ public void setData(String weight, String height, String gender){
 
 }
 
-public void uploadProfilePhoto(Intent data){
+public void uploadProfilePhoto(final Fragment frag, Intent data){
 
     Uri selectedImageUri = data.getData();
 
@@ -383,6 +409,9 @@ public void uploadProfilePhoto(Intent data){
                         profileData.setNewUrl(newPhotoUrl);
                         mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue( profileData.getOldUrl());
                         mDbUserRefernce.getRef().child(pushID).child("newurl").setValue( profileData.getNewUrl());
+                        if(frag instanceof MySettingsFragment){
+                            ((MySettingsFragment) frag).setPhoto(profileData.getNewUrl());
+                        }
 
                     }
 
@@ -392,6 +421,9 @@ public void uploadProfilePhoto(Intent data){
                         profileData.setNewUrl(newPhotoUrl);
                         mDbUserRefernce.getRef().child(pushID).child("oldurl").setValue(profileData.getOldUrl());
                         mDbUserRefernce.getRef().child(pushID).child("newurl").setValue(profileData.getNewUrl());
+                        if(frag instanceof MySettingsFragment){
+                            ((MySettingsFragment) frag).setPhoto(profileData.getNewUrl());
+                        }
 
                     }
 
@@ -411,6 +443,7 @@ public void uploadProfilePhoto(Intent data){
 
 
    public void photoPicker(Fragment frag,Intent intent){
+
     intent.setType("image/jpeg");
     intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
     frag.startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
@@ -423,12 +456,16 @@ public void uploadProfilePhoto(Intent data){
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
 
+
             } else if (resultCode == RESULT_CANCELED) {
+
+                activity.finish();
 
             }
         }
-            else if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
-                uploadProfilePhoto(data);
+
+        else if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+                uploadProfilePhoto(frag, data);
             }
 
     }
